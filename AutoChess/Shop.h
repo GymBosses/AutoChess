@@ -23,6 +23,7 @@ public:
 	Sprite get_item(int num);
 	bool check_item_on_field(int num, int scrX, int scrY);
 	int get_num_hero(int num);
+	void delete_item(int num);
 };
 
 #endif

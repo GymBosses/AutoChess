@@ -95,3 +95,8 @@ int Shop::get_num_hero(int num)
 		}
 	}
 }
+
+void Shop::delete_item(int num)
+{
+	showcase[num].setColor(Color::Transparent);
+}

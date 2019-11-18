@@ -123,6 +123,8 @@ int main()
 							int k = oldPos.x;
 							int index = k / (int(scrX / 4) - 146) - 1;
 							player.sell_hero(index);
+							shop.delete_item(player_choice);
+							num_heroes_on_field--;
 							gold.setString("Your gold: " + player.get_amount_gold());
 						}
 						else shop.move_item(player_choice, oldPos);
