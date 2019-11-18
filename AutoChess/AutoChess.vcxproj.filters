@@ -21,9 +21,15 @@
     <ClCompile Include="Player.cpp">
       <Filter>Файлы заголовков</Filter>
     </ClCompile>
+    <ClCompile Include="Shop.cpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Shop.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

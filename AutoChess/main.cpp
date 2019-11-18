@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <string>
 #include "Player.h"
+#include "Shop.h"
 //Size cards = (292, 400)
 using namespace sf;
 using namespace std;
@@ -57,22 +58,15 @@ int main()
 	gold.setPosition(int(scrX*0.01), int(scrY*0.7));
 	//------------------------------------------
 	Player player;
-	Sprite showcase[4];
+	Shop shop(heroes);
 	gold.setString("Your gold: " + player.get_amount_gold());
 	while (window.isOpen())
 	{
-		if (!battle & !store_full)
+		if (!battle && !shop.store_full)
 		{
 			int max_level = player.num_max_level_heroes();
-			int temp_hero;
-			srand(time(NULL));
-			for (int i = 0; i < 4; i++)
-			{
-				temp_hero = rand() % max_level + 1;
-				showcase[i] = heroes[temp_hero];
-				showcase[i].setPosition(store_position[i], store_position[4]);
-			}
-			store_full = true;
+			shop.set_heroes(max_level);
+			shop.set_pos_all_items(store_position);
 		}
 
 		Vector2i pos = Mouse::getPosition(window);
@@ -89,12 +83,12 @@ int main()
 				{
 					for (int i = 0; i < 4; i++)
 					{
-						if (showcase[i].getGlobalBounds().contains(pos.x, pos.y))
+						if (shop.check_point(i, pos))
 						{
 							isMove = true;
-							dx = pos.x - showcase[i].getPosition().x;
-							dy = pos.y - showcase[i].getPosition().y;
-							if (player_choice == -1) oldPos = showcase[i].getPosition();
+							dx = pos.x - shop.get_pos(i).x;
+							dy = pos.y - shop.get_pos(i).y;
+							if (player_choice == -1) oldPos = shop.get_pos(i);
 							player_choice = i;
 						}
 					}
@@ -107,31 +101,23 @@ int main()
 				{
 					if (isMove)
 					{
-						if (showcase[player_choice].getPosition().y < int(0.70 * scrY) &&
-							showcase[player_choice].getPosition().y > int(0.30 * scrY) &&
+						if (shop.check_item_on_field(player_choice, scrX, scrY) &&
 							oldPos.y > int(0.70 * scrY) &&
 							num_heroes_on_field < 3)
 						{
 							int hero_number;
-							for (int i = 1; i < 15; i++)
-							{
-								if (showcase[player_choice].getTexture() == heroes[i].getTexture())
-								{
-									hero_number = i;
-									break;
-								}
-							}
+							hero_number = shop.get_num_hero(player_choice);
 							if (player.buy_hero(hero_number))
 							{
 								gold.setString("Your gold: " + player.get_amount_gold());
 								float x = player_field[num_heroes_on_field];
 								float y = player_field[3];
-								showcase[player_choice].setPosition(x, y);
+								shop.move_item(player_choice, Vector2f(x, y));
 								num_heroes_on_field++;
 							}
-							else showcase[player_choice].setPosition(oldPos);
+							else shop.move_item(player_choice, oldPos);
 						}
-						else if (showcase[player_choice].getPosition().y < int(0.30 * scrY) &&
+						else if (shop.get_pos(player_choice).y < int(0.30 * scrY) &&
 							oldPos.y < int(0.70 * scrY) && oldPos.y > int(0.30 * scrY))
 						{
 							int k = oldPos.x;
@@ -139,10 +125,7 @@ int main()
 							player.sell_hero(index);
 							gold.setString("Your gold: " + player.get_amount_gold());
 						}
-						else
-						{
-							showcase[player_choice].setPosition(oldPos);
-						}
+						else shop.move_item(player_choice, oldPos);
 						player_choice = -1;
 						isMove = false;
 					}
@@ -150,7 +133,7 @@ int main()
 			}
 		}
 
-		if (isMove) showcase[player_choice].setPosition(pos.x - dx, pos.y - dy);
+		if (isMove) shop.move_item(player_choice, Vector2f(pos.x - dx, pos.y - dy));
 
 		window.clear();
 		window.draw(background_sprite);
@@ -158,7 +141,7 @@ int main()
 		{	
 			for (int i = 0; i < 4; i++)
 			{
-				window.draw(showcase[i]);
+				window.draw(shop.get_item(i));
 			}
 		}
 		window.draw(gold);

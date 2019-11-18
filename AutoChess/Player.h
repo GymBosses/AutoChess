@@ -8,7 +8,7 @@ class Player
 	int buffs;
 	int count_heroes = 0;
 	int golds = 3;
-	int store_level = 3;
+	int store_level = 1;
 public:
 	bool buy_hero(int hero_number);
 	void sell_hero(int number);
