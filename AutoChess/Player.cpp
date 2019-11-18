@@ -1,61 +1,74 @@
 #include <SFML/Graphics.hpp>
 #include "Player.h"
+#include <iostream>
+#include <Windows.h>
+#include <string>
+
 using namespace sf;
+using namespace std;
 
 bool Player::buy_hero(int hero_number)
 {
+	int minus = 0;
 	if (hero_number <= 5)
 	{
-		if (golds >= 1)
-		{
-			if (count_heroes <= 3)
-			{
-				heroes[count_heroes++] = hero_number;
-				return true;
-			}
-		}
+		minus = 1;
 	}
 	else if (hero_number <= 9)
 	{
-		if (golds >= 2)
-		{
-			if (count_heroes <= 3)
-			{
-				heroes[count_heroes++] = hero_number;
-				return true;
-			}
-		}
+		minus = 2;
 	}
 	else if (hero_number <= 12)
 	{
-		if (golds >= 3)
-		{
-			if (count_heroes <= 3)
-			{
-				heroes[count_heroes++] = hero_number;
-				return true;
-			}
-		}
+		minus = 3;
 	}
 	else if (hero_number <= 14)
 	{
-		if (golds >= 4)
+		minus = 4;
+	}
+	if (golds - minus < 0)
+	{
+		return false;
+	}
+	if (count_heroes < 3 && golds - minus >= 0)
+	{
+		for (int i = 0; i < 3; i++)
 		{
-			if (count_heroes <= 3)
+			if (heroes[i] == 0)
 			{
-				heroes[count_heroes++] = hero_number;
+				heroes[i] = hero_number;
+				golds = golds - minus;
+				count_heroes++;
 				return true;
 			}
 		}
 	}
-	return false;
 }
 
 void Player::sell_hero(int number)
 {
+	int hero_number = heroes[number];
+	int minus;
+	if (hero_number <= 5)
+	{
+		minus = 1;
+	}
+	else if (hero_number <= 9)
+	{
+		minus = 2;
+	}
+	else if (hero_number <= 12)
+	{
+		minus = 3;
+	}
+	else if (hero_number <= 14)
+	{
+		minus = 4;
+	}
+	golds = golds + minus;
 	if (number >= 1 && count_heroes <= number)
 	{
-		heroes[number] = 0; 
+		heroes[number] = 0;
 	}
 }
 
@@ -78,4 +91,16 @@ int Player::num_max_level_heroes()
 	}
 	store_level = 4;
 	return 14;
+}
+
+void Player::up_level()
+{
+	if (store_level == 4) return;
+	store_level++;
+}
+
+string Player::get_amount_gold()
+{
+	string gold = to_string(golds);
+	return gold;
 }
