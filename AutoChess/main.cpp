@@ -1,4 +1,4 @@
-#include <SFML/Graphics.hpp>
+п»ї#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
 #include "Player.h"
@@ -46,7 +46,7 @@ int main()
 	sf::Sprite refresh;
 	refresh.setTexture(refresh_texture);
 	refresh.setPosition(int(0.05 * scrX), int(0.80 * scrY));
-	//На всякий случай
+	//РќР° РІСЃСЏРєРёР№ СЃР»СѓС‡Р°Р№
 	bool isMove = false;
 	float dx, dy;
 	//-----------------------------SET_TEXT_GOLD
@@ -199,4 +199,4 @@ void set_position(int* store_position, float plot, int len)
 	}
 	store_position[len] = int(scrY * plot);
 }
-//такой вот код значит
+//С‚Р°РєРѕР№ РІРѕС‚ РєРѕРґ Р·РЅР°С‡РёС‚
