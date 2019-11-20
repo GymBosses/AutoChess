@@ -11,9 +11,9 @@ const int scrX = 3000;
 const int scrY = 2000;
 bool battle = false;
 bool store_full = false;
-int num_heroes_on_field = 0;
 sf::Vector2f oldPos;
 void set_position(int* store_postion, float plot, int len);
+bool move_from_bg;
 
 int main()
 {
@@ -43,6 +43,11 @@ int main()
 		window.getSize().y / background_sprite.getLocalBounds().height);
 	background_sprite.setColor(sf::Color(255, 255, 255, 128));
 	//------------------------------------------
+	sf::Texture refresh_texture;
+	refresh_texture.loadFromFile("image/refresh.png");
+	sf::Sprite refresh;
+	refresh.setTexture(refresh_texture);
+	refresh.setPosition(int(0.05 * scrX), int(0.80 * scrY));
 	//На всякий случай
 	bool isMove = false;
 	float dx, dy;
@@ -56,8 +61,8 @@ int main()
 	gold.setPosition(int(scrX*0.01), int(scrY*0.7));
 	//------------------------------------------
 	Player player;
-	Shop shop(heroes);
-	Battleground bg(heroes);
+	Shop shop(heroes, store_position);
+	Battleground bg_player(heroes, player_field);
 	gold.setString("Your gold: " + player.get_amount_gold());
 	while (window.isOpen())
 	{
@@ -65,7 +70,6 @@ int main()
 		{
 			int max_level = player.num_max_level_heroes();
 			shop.set_heroes(max_level);
-			shop.set_pos_all_items(store_position);
 		}
 
 		sf::Vector2i pos = sf::Mouse::getPosition(window);
@@ -85,10 +89,24 @@ int main()
 						if (shop.check_point(i, pos))
 						{
 							isMove = true;
+							move_from_bg = false;
 							shop.set_pl_ch(i);
-							dx = pos.x - shop.get_pos().x;
-							dy = pos.y - shop.get_pos().y;
-							oldPos = shop.get_pos();
+							sf::Vector2f t = shop.get_pos();
+							dx = pos.x - t.x;
+							dy = pos.y - t.y;
+							oldPos = t;
+							break;
+						}
+						else if (i != 3 && bg_player.check_point(i, pos))
+						{
+							isMove = true;
+							move_from_bg = true;
+							bg_player.set_pl_ch(i);
+							sf::Vector2f t = bg_player.get_pos();
+							dx = pos.x - t.x;
+							dy = pos.y - t.y;
+							oldPos = t;
+							break;
 						}
 					}
 				}
@@ -100,51 +118,68 @@ int main()
 				{
 					if (isMove)
 					{
-						if (shop.check_item_on_field(scrX, scrY) &&
-							oldPos.y > int(0.70 * scrY) &&
-							num_heroes_on_field < 3)
-						{
-							int hero_number;
-							hero_number = shop.get_num_hero();
-							if (player.buy_hero(hero_number))
+						//Buy hero from shop
+						if (!move_from_bg) {
+							if (!bg_player.check_full_bg() && shop.check_item_on_field(scrY))
 							{
-								gold.setString("Your gold: " + player.get_amount_gold());
-								float x = player_field[num_heroes_on_field];
-								float y = player_field[3];
-								shop.move_item(sf::Vector2f(x, y));
-								num_heroes_on_field++;
+								int hero_number;
+								hero_number = shop.get_num_hero();
+								if (player.buy_hero(hero_number))
+								{
+									gold.setString("Your gold: " + player.get_amount_gold());
+									shop.delete_item();
+									bg_player.set_hero(hero_number);
+								}
+								else shop.move_item(oldPos);
 							}
 							else shop.move_item(oldPos);
 						}
-						else if (shop.get_pos().y < int(0.30 * scrY) &&
-							oldPos.y < int(0.70 * scrY) && oldPos.y > int(0.30 * scrY))
+						//Sell hero from battleground
+						else if (move_from_bg && bg_player.check_item_on_field(scrY))
 						{
 							int k = oldPos.x;
 							int index = k / (int(scrX / 4) - 146) - 1;
+							bg_player.sell_hero();
 							player.sell_hero(index);
-							shop.delete_item();
-							num_heroes_on_field--;
 							gold.setString("Your gold: " + player.get_amount_gold());
 						}
-						else shop.move_item(oldPos);
+						else
+						{
+							bg_player.move_item(oldPos);
+						}
 						shop.set_pl_ch(-1);
+						bg_player.set_pl_ch(-1);
 						isMove = false;
+					}
+
+					if (refresh.getGlobalBounds().contains(pos.x, pos.y))
+					{
+						shop.refresh();
 					}
 				}
 			}
 		}
 
-		if (isMove) shop.move_item(sf::Vector2f(pos.x - dx, pos.y - dy));
-		//Sprite kok;
+		if (isMove)
+		{
+			sf::Vector2f to_move(pos.x - dx, pos.y - dy);
+			if (move_from_bg)
+			{
+				bg_player.move_item(to_move);
+			}
+			else shop.move_item(to_move);
+		}
 		window.clear();
 		window.draw(background_sprite);
-		//	window.draw(kok);
 		if (!battle) 
 		{	
-			for (int i = 0; i < 4; i++)
+			for (int i = 0; i < 3; i++)
 			{
 				window.draw(shop.get_item(i));
+				window.draw(bg_player.get_item(i));
 			}
+			window.draw(shop.get_item(3));
+			window.draw(refresh);
 		}
 		window.draw(gold);
 		window.display();

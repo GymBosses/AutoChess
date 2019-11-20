@@ -30,7 +30,7 @@ bool Player::buy_hero(int hero_number)
 	{
 		return false;
 	}
-	if (count_heroes < 3 && golds - minus >= 0)
+	if (count_heroes < 3)
 	{
 		for (int i = 0; i < 3; i++)
 		{
@@ -43,6 +43,7 @@ bool Player::buy_hero(int hero_number)
 			}
 		}
 	}
+	return false;
 }
 
 void Player::sell_hero(int number)
@@ -66,10 +67,8 @@ void Player::sell_hero(int number)
 		minus = 4;
 	}
 	golds = golds + minus;
-	if (number >= 1 && count_heroes <= number)
-	{
-		heroes[number] = 0;
-	}
+	heroes[number] = 0;
+	count_heroes--;
 }
 
 int Player::num_max_level_heroes()

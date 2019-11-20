@@ -7,11 +7,19 @@
 //using namespace sf;
 //using namespace std;
 
-Shop::Shop(sf::Sprite* heroes)
+Shop::Shop(sf::Sprite* heroes, int* store_position)
 {
 	for (int i = 1; i < 15; i++)
 	{
 		all_heroes[i] = heroes[i];
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		position[i] = store_position[i];
+		if (i <= 3)
+		{
+			showcase[i].setPosition(position[i], store_position[4]);
+		}
 	}
 	player_choice = -1;
 	store_full = false;
@@ -26,7 +34,7 @@ void Shop::set_heroes(int max_level_shop)
 	for (int i = 0; i < 4; i++)
 	{
 		temp_hero = rand() % max_level + 1;
-		showcase[i] = all_heroes[temp_hero];
+		showcase[i].setTexture(*all_heroes[temp_hero].getTexture());
 	}
 	store_full = true;
 }
@@ -46,14 +54,6 @@ void Shop::refresh()
 void Shop::set_pl_ch(int num)
 {
 	player_choice = num;
-}
-
-void Shop::set_pos_all_items(int* store_position)
-{
-	for (int i = 0; i < 4; i++)
-	{
-		showcase[i].setPosition(store_position[i], store_position[4]);
-	}
 }
 
 sf::Vector2f Shop::get_pos()
@@ -81,7 +81,7 @@ void Shop::move_item(sf::Vector2f pos)
 	showcase[player_choice].setPosition(pos.x, pos.y);
 }
 
-bool Shop::check_item_on_field(int scrX, int scrY)
+bool Shop::check_item_on_field(int scrY)
 {
 	return showcase[player_choice].getPosition().y < int(0.70 * scrY) &&
 		showcase[player_choice].getPosition().y > int(0.30 * scrY);
@@ -100,5 +100,7 @@ int Shop::get_num_hero()
 //Delete this method
 void Shop::delete_item()
 {
-	showcase[player_choice].setColor(sf::Color::Transparent);
+	sf::Sprite temp;
+	temp.setPosition(position[player_choice], position[4]);
+	showcase[player_choice] = temp;
 }
