@@ -103,3 +103,12 @@ std::string Player::get_amount_gold()
 	std::string gold = std::to_string(golds);
 	return gold;
 }
+
+bool Player::refresh()
+{
+	if (golds == 0)
+	{
+		return false;
+	}
+	return golds--;
+}

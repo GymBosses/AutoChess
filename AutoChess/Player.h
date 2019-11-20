@@ -15,6 +15,7 @@ public:
 	int num_max_level_heroes(); //Returns the maximum hero number depending on the player’s level
 	void up_level();
 	std::string get_amount_gold();
+	bool refresh();
 };
 
 #endif

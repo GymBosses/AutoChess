@@ -154,7 +154,11 @@ int main()
 
 					if (refresh.getGlobalBounds().contains(pos.x, pos.y))
 					{
-						shop.refresh();
+						if (player.refresh())
+						{
+							shop.refresh();
+							gold.setString("Your gold: " + player.get_amount_gold());
+						}
 					}
 				}
 			}
