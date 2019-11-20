@@ -1,6 +1,5 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include <Windows.h>
 #include <string>
 #include "Player.h"
 #include "Shop.h"
@@ -10,7 +9,6 @@
 const int scrX = 3000;
 const int scrY = 2000;
 bool battle = false;
-bool store_full = false;
 sf::Vector2f oldPos;
 void set_position(int* store_postion, float plot, int len);
 bool move_from_bg;
@@ -201,3 +199,4 @@ void set_position(int* store_position, float plot, int len)
 	}
 	store_position[len] = int(scrY * plot);
 }
+//такой вот код значит
