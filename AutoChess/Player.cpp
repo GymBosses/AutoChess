@@ -4,8 +4,8 @@
 #include <Windows.h>
 #include <string>
 
-using namespace sf;
-using namespace std;
+//using namespace sf;
+//using namespace std;
 
 bool Player::buy_hero(int hero_number)
 {
@@ -99,8 +99,8 @@ void Player::up_level()
 	store_level++;
 }
 
-string Player::get_amount_gold()
+std::string Player::get_amount_gold()
 {
-	string gold = to_string(golds);
+	std::string gold = std::to_string(golds);
 	return gold;
 }

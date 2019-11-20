@@ -1,6 +1,6 @@
 #ifndef _H_
 #define _H_
-using namespace std;
+//using namespace std;
 
 class Player
 {
@@ -14,7 +14,7 @@ public:
 	void sell_hero(int number);
 	int num_max_level_heroes(); //Returns the maximum hero number depending on the player’s level
 	void up_level();
-	string get_amount_gold();
+	std::string get_amount_gold();
 };
 
 #endif

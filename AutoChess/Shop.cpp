@@ -4,15 +4,18 @@
 #include <Windows.h>
 #include <string>
 
-using namespace sf;
-using namespace std;
+//using namespace sf;
+//using namespace std;
 
-Shop::Shop(Sprite* heroes)
+Shop::Shop(sf::Sprite* heroes)
 {
 	for (int i = 1; i < 15; i++)
 	{
 		all_heroes[i] = heroes[i];
 	}
+	player_choice = -1;
+	store_full = false;
+	max_level = 0;
 }
 
 void Shop::set_heroes(int max_level_shop)
@@ -30,12 +33,19 @@ void Shop::set_heroes(int max_level_shop)
 
 void Shop::refresh()
 {
+	int temp_hero;
 	srand(time(NULL));
 	for (int i = 0; i < 4; i++)
 	{
-		showcase[i].setTexture(*all_heroes[i].getTexture());
+		temp_hero = rand() % max_level + 1;
+		showcase[i].setTexture(*all_heroes[temp_hero].getTexture());
 	}
 	store_full = true;
+}
+
+void Shop::set_pl_ch(int num)
+{
+	player_choice = num;
 }
 
 void Shop::set_pos_all_items(int* store_position)
@@ -46,57 +56,49 @@ void Shop::set_pos_all_items(int* store_position)
 	}
 }
 
-Vector2f Shop::get_pos(int num)
+sf::Vector2f Shop::get_pos()
 {
-	return showcase[num].getPosition();
+	return showcase[player_choice].getPosition();
 }
 
-void Shop::set_pos(int num, int x, int y)
+void Shop::set_pos(int x, int y)
 {
-	showcase[num].setPosition(x, y);
+	showcase[player_choice].setPosition(x, y);
 }
 
-bool Shop::check_point(int num, Vector2i pos)
+bool Shop::check_point(int num, sf::Vector2i pos)
 {
-	if (showcase[num].getGlobalBounds().contains(pos.x, pos.y))
-	{
-		return true;
-	}
-	return false;
+	return showcase[num].getGlobalBounds().contains(pos.x, pos.y) && player_choice == -1;
 }
 
-Sprite Shop::get_item(int num)
+sf::Sprite Shop::get_item(int num)
 {
 	return showcase[num];
 }
 
-void Shop::move_item(int num, Vector2f pos)
+void Shop::move_item(sf::Vector2f pos)
 {
-	showcase[num].setPosition(pos.x, pos.y);
+	showcase[player_choice].setPosition(pos.x, pos.y);
 }
 
-bool Shop::check_item_on_field(int num, int scrX, int scrY)
+bool Shop::check_item_on_field(int scrX, int scrY)
 {
-	if (showcase[num].getPosition().y < int(0.70 * scrY) &&
-		showcase[num].getPosition().y > int(0.30 * scrY))
-	{
-		return true;
-	}
-	return false;
+	return showcase[player_choice].getPosition().y < int(0.70 * scrY) &&
+		showcase[player_choice].getPosition().y > int(0.30 * scrY);
 }
 
-int Shop::get_num_hero(int num)
+int Shop::get_num_hero()
 {
 	for (int i = 1; i < 15; i++)
 	{
-		if (showcase[num].getTexture() == all_heroes[i].getTexture())
+		if (showcase[player_choice].getTexture() == all_heroes[i].getTexture())
 		{
 			return i;
 		}
 	}
 }
-
-void Shop::delete_item(int num)
+//Delete this method
+void Shop::delete_item()
 {
-	showcase[num].setColor(Color::Transparent);
+	showcase[player_choice].setColor(sf::Color::Transparent);
 }
