@@ -92,10 +92,34 @@ int Player::num_max_level_heroes()
 	return 14;
 }
 
-void Player::up_level()
+bool Player::up_level()
 {
-	if (store_level == 4) return;
+	int minus;
+	switch (store_level)
+	{
+	case 1:
+		minus = 3;
+		break;
+	case 2:
+		minus = 4;
+		break;
+	case 3:
+		minus = 5;
+		break;
+	case 4:
+		minus = 6;
+		break;
+	default:
+		return false;
+	}
+
+	if (golds - minus < 0 || store_level == 4)
+	{
+		return false;
+	}
 	store_level++;
+	golds = golds - minus;
+	return true;
 }
 
 std::string Player::get_amount_gold()

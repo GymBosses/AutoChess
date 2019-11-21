@@ -41,12 +41,17 @@ int main()
 		window.getSize().x / background_sprite.getLocalBounds().width,
 		window.getSize().y / background_sprite.getLocalBounds().height);
 	background_sprite.setColor(sf::Color(255, 255, 255, 128)); //50% прозрачности
-	//------------------------------------------Спрайт обновления магазина
+	//------------------------------------------Спрайт обновления магазина и повышение уровня таверны
 	sf::Texture refresh_texture;
 	refresh_texture.loadFromFile("image/refresh.png");
 	sf::Sprite refresh;
 	refresh.setTexture(refresh_texture);
 	refresh.setPosition(int(0.05 * scrX), int(0.80 * scrY));
+	sf::Texture levelup_texture;
+	levelup_texture.loadFromFile("image/levelup.png");
+	sf::Sprite levelup;
+	levelup.setTexture(levelup_texture);
+	levelup.setPosition(int(0.80 * scrX), int(0.05 * scrY));
 	//На всякий случай
 	bool isMove = false;
 	float dx, dy;
@@ -158,6 +163,15 @@ int main()
 							gold.setString("Your gold: " + player.get_amount_gold());
 						}
 					}
+
+					if (levelup.getGlobalBounds().contains(pos.x, pos.y)) //Повышение уровня магазина
+					{
+						if (player.up_level())
+						{
+							shop.set_heroes(player.num_max_level_heroes());
+							gold.setString("Your gold: " + player.get_amount_gold());
+						}
+					}
 				}
 			}
 		}
@@ -182,6 +196,7 @@ int main()
 			}
 			window.draw(shop.get_item(3));
 			window.draw(refresh);
+			window.draw(levelup);
 		}
 		window.draw(gold);
 		window.display();
