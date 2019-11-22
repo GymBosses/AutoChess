@@ -18,7 +18,7 @@ void Hero::buff_hero(int up_attack, int up_health)
 	health += up_health;
 }
 
-int Hero::hero_attacked(int attack_vl)
+void Hero::hero_attacked(int attack_vl)
 {
 	health -= attack_vl;
 }

@@ -5,7 +5,7 @@
 
 class Player
 {
-	Hero heroes[3];
+	int heroes[3] = { 0, 0, 0 };
 	int count_heroes = 0;
 	int golds = 300;
 	int store_level = 1;
