@@ -1,11 +1,11 @@
 #ifndef _H_
 #define _H_
+#include "Hero.h"
 //using namespace std;
 
 class Player
 {
-	int heroes[3] = { 0, 0, 0 };
-	int buffs;
+	Hero heroes[3];
 	int count_heroes = 0;
 	int golds = 300;
 	int store_level = 1;
