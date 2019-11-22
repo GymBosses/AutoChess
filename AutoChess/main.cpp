@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Shop.h"
 #include "Battleground.h"
+#include "MySprite.h"
 ////Size cards = (292, 400)
 
 const int scrX = 3000; //Размеры экрана(меняет под свой экран, нужно тестировать)
@@ -52,6 +53,11 @@ int main()
 	sf::Sprite levelup;
 	levelup.setTexture(levelup_texture);
 	levelup.setPosition(int(0.80 * scrX), int(0.05 * scrY));
+	sf::Texture start_game_texture;
+	start_game_texture.loadFromFile("image/startgame.png");
+	sf::Sprite start_game;
+	start_game.setTexture(start_game_texture);
+	start_game.setPosition(int(0.9 * scrX), int(0.5 * scrY));
 	//На всякий случай
 	bool isMove = false;
 	float dx, dy;
@@ -84,7 +90,7 @@ int main()
 			if (event.type == sf::Event::Closed) //закрываем окно при нажатии на "Закрыть" (или нет, не знаю)
 				window.close();
 
-			if (event.type == sf::Event::MouseButtonPressed) 
+			if (event.type == sf::Event::MouseButtonPressed && !battle) 
 			{
 				if (event.key.code == sf::Mouse::Left) //очевидно
 				{
@@ -104,7 +110,7 @@ int main()
 						else if (i != 3 && bg_player.check_point(i, pos)) //нажали на кого-то из боевого поля
 						{
 							isMove = true;
-							move_from_bg = true;		//анал - но выше
+							move_from_bg = true;		//аналогично выше
 							bg_player.set_pl_ch(i);
 							sf::Vector2f t = bg_player.get_pos();
 							dx = pos.x - t.x;
@@ -116,7 +122,7 @@ int main()
 				}
 			}
 
-			if (event.type == sf::Event::MouseButtonReleased) //отпускание кнопки мыши
+			if (event.type == sf::Event::MouseButtonReleased && !battle) //отпускание кнопки мыши
 			{
 				if (event.key.code == sf::Mouse::Left)// не правая
 				{
@@ -172,6 +178,12 @@ int main()
 							gold.setString("Your gold: " + player.get_amount_gold());
 						}
 					}
+
+					if (start_game.getGlobalBounds().contains(pos.x, pos.y))
+					{
+						//battle = true;
+						//isMove = false;
+					}
 				}
 			}
 		}
@@ -197,6 +209,11 @@ int main()
 			window.draw(shop.get_item(3));
 			window.draw(refresh);
 			window.draw(levelup);
+			window.draw(start_game);
+		}
+		if (battle)
+		{
+			//....
 		}
 		window.draw(gold);
 		window.display();
