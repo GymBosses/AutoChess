@@ -5,6 +5,8 @@
 #include "Shop.h"
 #include "Battleground.h"
 #include "MySprite.h"
+#include "Computer.h"
+#include "User.h"
 ////Size cards = (292, 400)
 
 const int scrX = 3000; //Размеры экрана(меняет под свой экран, нужно тестировать)
@@ -33,6 +35,8 @@ int main()
 	set_position(store_position, 0.75, 5);
 	int player_field[4];				//аналогично на поле
 	set_position(player_field, 0.50, 4);
+	int comp_field[4];
+	set_position(comp_field, 0.10, 4);
 	//------------------------------ установка бэкграунда
 	sf::Texture background_texture;
 	background_texture.loadFromFile("image/pubg+cats.jpg");
@@ -70,7 +74,8 @@ int main()
 	gold.setCharacterSize(80);
 	gold.setPosition(int(scrX*0.01), int(scrY*0.7)); //тут надо подумать, куда поставить
 	//------------------------------------------
-	Player player;	//пока что нужен лишь для того, чтобы отслеживать золото(возможно можно заменить)
+	User player;	//Player
+	Computer comp(heroes, comp_field);  //Computer
 	Shop shop(heroes, store_position); //кошачий рынок
 	Battleground bg_player(heroes, player_field); //игровое поле
 	gold.setString("Your gold: " + player.get_amount_gold()); //записываем в text строку
@@ -181,8 +186,14 @@ int main()
 
 					if (start_game.getGlobalBounds().contains(pos.x, pos.y))
 					{
-						//battle = true;
-						//isMove = false;
+						battle = true;
+						isMove = false;
+						for (int i = 0; i < 3; i++)
+						{
+							if (bg_player.get_item(i).getTexture() == NULL) continue;
+							player.set_sprite_hero(bg_player.get_item(i), bg_player.get_item(i).getPosition(), i);
+						}
+						comp.set_heroes();
 					}
 				}
 			}
@@ -210,12 +221,17 @@ int main()
 			window.draw(refresh);
 			window.draw(levelup);
 			window.draw(start_game);
+			window.draw(gold);
 		}
 		if (battle)
 		{
-			//....
+			for (int i = 0; i < 3; i++)
+			{
+				window.draw(player.get_item(i));
+				window.draw(comp.get_item(i));
+				//computer.get_item(i);
+			}
 		}
-		window.draw(gold);
 		window.display();
 	}
 

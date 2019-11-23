@@ -20,7 +20,7 @@ public:
 	void set_pos(int x, int y);
 	bool check_point(int num, sf::Vector2i pos);
 	void move_item(sf::Vector2f pos);
-	sf::Sprite get_item(int num);
+	sf::Sprite get_item(int num = -1);
 	bool check_item_on_field(int scrY);
 	int get_num_hero();
 	void delete_item();

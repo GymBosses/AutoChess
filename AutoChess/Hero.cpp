@@ -2,9 +2,10 @@
 #include <string>
 #include "Hero.h"
 
-Hero::Hero(sf::Sprite hero)
+void Hero::set_texture(sf::Sprite sp, int cost_hero, int number_hero)
 {
-	sprite_hero = hero;
+	hero.setTexture(*sp.getTexture());
+	health = 10;
 }
 
 int Hero::attack()
@@ -25,7 +26,20 @@ void Hero::hero_attacked(int attack_vl)
 
 bool Hero::hero_died()
 {
-	return health <= 0;
+	if (health > 0) return true;
+	sf::Sprite temp;
+	hero = temp;
+	return false;
+}
+
+int Hero::get_number()
+{
+	return number;
+}
+
+int Hero::get_cost()
+{
+	return cost;
 }
 
 std::string Hero::get_attack()
@@ -36,4 +50,25 @@ std::string Hero::get_attack()
 std::string Hero::get_health()
 {
 	return std::to_string(health);
+}
+
+sf::Sprite Hero::get_sprite()
+{
+	return hero;
+}
+
+void Hero::set_position(sf::Vector2f pos)
+{
+	hero.setPosition(pos);
+}
+
+void Hero::set_cost_num(int cost_hero, int num_hero)
+{
+	if (cost_hero == 0)
+	{
+		sf::Sprite temp;
+		hero = temp;
+	}
+	cost = cost_hero;
+	number = num_hero;
 }

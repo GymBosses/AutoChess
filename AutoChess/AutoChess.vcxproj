@@ -20,20 +20,24 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Battleground.cpp" />
+    <ClCompile Include="Computer.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MySprite.cpp" />
     <ClCompile Include="MyText.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Shop.cpp" />
+    <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Battleground.h" />
+    <ClInclude Include="Computer.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="MySprite.h" />
     <ClInclude Include="MyText.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Shop.h" />
+    <ClInclude Include="User.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

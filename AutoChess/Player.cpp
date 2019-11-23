@@ -6,26 +6,32 @@
 //using namespace sf;
 //using namespace std;
 
+
+sf::Sprite Player::get_item(int num)
+{
+	return heroes[num].get_sprite();
+}
+
 bool Player::buy_hero(int hero_number)
 {
-	int minus = 0;
+	int cost = 0;
 	if (hero_number <= 5)
 	{
-		minus = 1;
+		cost = 1;
 	}
 	else if (hero_number <= 9)
 	{
-		minus = 2;
+		cost = 2;
 	}
 	else if (hero_number <= 12)
 	{
-		minus = 3;
+		cost = 3;
 	}
 	else if (hero_number <= 14)
 	{
-		minus = 4;
+		cost = 4;
 	}
-	if (golds - minus < 0)
+	if (golds - cost < 0)
 	{
 		return false;
 	}
@@ -33,10 +39,10 @@ bool Player::buy_hero(int hero_number)
 	{
 		for (int i = 0; i < 3; i++)
 		{
-			if (heroes[i] == 0)
+			if (!heroes[i].hero_died())
 			{
-				heroes[i] = hero_number;
-				golds = golds - minus;
+				heroes[i].set_cost_num(cost, hero_number);
+				golds = golds - cost;
 				count_heroes++;
 				return true;
 			}
@@ -45,93 +51,48 @@ bool Player::buy_hero(int hero_number)
 	return false;
 }
 
-void Player::sell_hero(int number)
-{
-	int hero_number = heroes[number];
-	int minus;
-	if (hero_number <= 5)
-	{
-		minus = 1;
-	}
-	else if (hero_number <= 9)
-	{
-		minus = 2;
-	}
-	else if (hero_number <= 12)
-	{
-		minus = 3;
-	}
-	else if (hero_number <= 14)
-	{
-		minus = 4;
-	}
-	golds = golds + minus;
-	heroes[number] = 0;
-	count_heroes--;
-}
-
 int Player::num_max_level_heroes()
 {
 	switch (store_level)
 	{
-		case 1:
-			return 5;
-			break;
-		case 2:
-			return 9;
-			break;
-		case 3:
-			return 12;
-			break;
-		case 4:
-			return 14;
-			break;
+	case 1:
+		return 5;
+		break;
+	case 2:
+		return 9;
+		break;
+	case 3:
+		return 12;
+		break;
+	case 4:
+		return 14;
+		break;
 	}
 	store_level = 4;
 	return 14;
 }
 
-bool Player::up_level()
+void Player::sell_hero(int number)
 {
-	int minus;
-	switch (store_level)
+	int hero_number = heroes[number].get_number();
+	int cost = 0;
+	if (hero_number <= 5)
 	{
-	case 1:
-		minus = 3;
-		break;
-	case 2:
-		minus = 4;
-		break;
-	case 3:
-		minus = 5;
-		break;
-	case 4:
-		minus = 6;
-		break;
-	default:
-		return false;
+		cost = 1;
 	}
-
-	if (golds - minus < 0 || store_level == 4)
+	else if (hero_number <= 9)
 	{
-		return false;
+		cost = 2;
 	}
-	store_level++;
-	golds = golds - minus;
-	return true;
-}
-
-std::string Player::get_amount_gold()
-{
-	std::string gold = std::to_string(golds);
-	return gold;
-}
-
-bool Player::refresh()
-{
-	if (golds == 0)
+	else if (hero_number <= 12)
 	{
-		return false;
+		cost = 3;
 	}
-	return golds--;
+	else if (hero_number <= 14)
+	{
+		cost = 4;
+	}
+	golds = golds + cost;
+	heroes[number].set_cost_num(0, 0);
+	count_heroes--;
 }

@@ -73,6 +73,7 @@ bool Shop::check_point(int num, sf::Vector2i pos)
 
 sf::Sprite Shop::get_item(int num)
 {
+	if (num == -1) return showcase[player_choice];
 	return showcase[num];
 }
 
