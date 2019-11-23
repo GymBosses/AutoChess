@@ -6,6 +6,7 @@ void Hero::set_texture(sf::Sprite sp, int cost_hero, int number_hero)
 {
 	hero.setTexture(*sp.getTexture());
 	health = 10;
+	attack_val = 10;
 }
 
 int Hero::attack()

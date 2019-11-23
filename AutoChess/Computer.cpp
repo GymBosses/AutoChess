@@ -23,5 +23,6 @@ void Computer::set_heroes()
 	{
 		temp_hero = rand() % max_level + 1;
 		heroes[i].set_texture(all_heroes[temp_hero]);
+		heroes[i].set_cost_num(store_level, temp_hero);
 	}
 }

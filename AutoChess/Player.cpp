@@ -96,3 +96,13 @@ void Player::sell_hero(int number)
 	heroes[number].set_cost_num(0, 0);
 	count_heroes--;
 }
+
+std::string Player::get_health(int num)
+{
+	return heroes[num].get_health();
+}
+
+std::string Player::get_attack(int num)
+{
+	return heroes[num].get_attack();
+}

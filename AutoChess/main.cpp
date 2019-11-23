@@ -69,6 +69,13 @@ int main()
 	sf::Font font;
 	font.loadFromFile("font/Alata-Regular.ttf");
 	sf::Text gold;
+	sf::Text characteristic[12];
+	for (int i = 0; i < 12; i++)
+	{
+		characteristic[i].setFont(font);
+		characteristic[i].setFillColor(sf::Color::White);
+		characteristic[i].setCharacterSize(80);
+	}
 	gold.setFont(font);
 	gold.setFillColor(sf::Color::White);
 	gold.setCharacterSize(80);
@@ -229,7 +236,33 @@ int main()
 			{
 				window.draw(player.get_item(i));
 				window.draw(comp.get_item(i));
-				//computer.get_item(i);
+			}
+			for (int i = 0; i < 12; i++)
+			{
+				int num;
+				Player temp;
+				if (i < 6)
+				{
+					num = i / 2;
+					temp = player;
+				}
+				else 
+				{
+					num = (i - 6) / 2;
+					temp = comp;
+				}
+				sf::Vector2f pos_hero = temp.get_item(num).getPosition();
+				if (i % 2 == 0)
+				{
+					characteristic[i].setString(temp.get_health(num));
+					characteristic[i].setPosition(pos_hero.x, pos_hero.y - 100);
+				}
+				else
+				{
+					characteristic[i].setString(temp.get_attack(num));
+					characteristic[i].setPosition(pos_hero.x + 210, pos_hero.y - 100);
+				}
+				window.draw(characteristic[i]);
 			}
 		}
 		window.display();

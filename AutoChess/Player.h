@@ -15,6 +15,8 @@ public:
 	void sell_hero(int number);
 	int num_max_level_heroes(); //Returns the maximum hero number depending on the player’s level
 	sf::Sprite get_item(int num);
+	std::string get_health(int num);
+	std::string get_attack(int num);
 };
 
 #endif
