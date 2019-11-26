@@ -2,6 +2,8 @@
 #include "Player.h"
 #include <iostream>
 #include <string>
+#include "User.h"
+#include "Computer.h"
 
 //using namespace sf;
 //using namespace std;
@@ -39,7 +41,7 @@ bool Player::buy_hero(int hero_number)
 	{
 		for (int i = 0; i < 3; i++)
 		{
-			if (!heroes[i].hero_died())
+			if (heroes[i].hero_died())
 			{
 				heroes[i].set_cost_num(cost, hero_number);
 				golds = golds - cost;
@@ -106,3 +108,92 @@ std::string Player::get_attack(int num)
 {
 	return heroes[num].get_attack();
 }
+
+int Player::have_taunt()
+{
+	for (int i = 0; i < 3; i++)
+	{
+		if (heroes[i].get_number() == 11 || heroes[i].get_number() == 12)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
+void Player::get_hit(int num, int attack_val)
+{
+	heroes[num].attack_this_hero(attack_val);
+	heroes[num].hero_died();  //изменить hero_dies() 
+}
+
+void Player::refresh_attack()
+{
+	for (int i = 0; i < 3; i++)
+	{
+		heroes[i].refresh_attack();
+	}
+}
+//Надо думать, как сократить----------------------------------------------------------------
+//void Player::attack_comp(User* pl)
+//{
+//	Hero* p;
+//	bool all_attacked = true;
+//	for (int i = 0; i < 3; i++)
+//	{
+//		if (!heroes[i].hero_attacked())
+//		{
+//			p = &heroes[i];
+//			all_attacked = false;
+//			break;
+//		}
+//	}
+//	if (all_attacked)
+//	{
+//		refresh_attack();
+//		p = &heroes[0];
+//	}
+//	int target;
+//	srand(time(NULL));
+//	target = pl->have_taunt();
+//	if (target == -1) target = rand() % 3;
+//	pl->get_hit(target, p->attack());
+//}
+////А то какая-то жопа получилась-----------------------------------------------------------------
+//void Player::attack_player(Computer* pl)
+//{
+//	Hero* p;
+//	bool all_attacked = true;
+//	for (int i = 0; i < 3; i++)
+//	{
+//		if (!heroes[i].hero_attacked())
+//		{
+//			p = &heroes[i];
+//			all_attacked = false;
+//			break;
+//		}
+//	}
+//	if (all_attacked)
+//	{
+//		refresh_attack();
+//		p = &heroes[0];
+//	}
+//	int target;
+//	srand(time(NULL));
+//	target = pl->have_taunt();
+//	if (target == -1) target = rand() % 3;
+//	pl->get_hit(target, p->attack());
+//}
+
+bool Player::all_died()
+{
+	for (int i = 0; i < 3; i++)
+	{
+		if (!heroes[i].hero_died())
+		{
+			return false;
+		}
+	}
+	return true;
+}
+

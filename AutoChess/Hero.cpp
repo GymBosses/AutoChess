@@ -20,17 +20,17 @@ void Hero::buff_hero(int up_attack, int up_health)
 	health += up_health;
 }
 
-void Hero::hero_attacked(int attack_vl)
+void Hero::attack_this_hero(int attack_vl)
 {
 	health -= attack_vl;
 }
 
 bool Hero::hero_died()
 {
-	if (health > 0) return true;
+	if (health > 0) return false;
 	sf::Sprite temp;
 	hero = temp;
-	return false;
+	return true;
 }
 
 int Hero::get_number()
@@ -72,4 +72,14 @@ void Hero::set_cost_num(int cost_hero, int num_hero)
 	}
 	cost = cost_hero;
 	number = num_hero;
+}
+
+bool Hero::hero_attacked()
+{
+	return hero_already_attacked;
+}
+
+void Hero::refresh_attack()
+{
+	hero_already_attacked = false;
 }

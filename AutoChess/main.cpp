@@ -13,6 +13,7 @@ const int scrX = 3000; //Размеры экрана(меняет под сво�
 const int scrY = 2000;
 bool battle = false;   //Отвечает за режим игры: бой(true) или закупка персонажей
 sf::Vector2f oldPos;   //Перед тем, как передвинуть спрайт, запоминаем его старую позицию
+
 //задаёт точки(x1, x2...xn, y), где распологаются спрайты(x1,y)(x2,y) магазина и поле игрока
 void set_position(int* store_postion, float plot, int len); 
 bool move_from_bg;     //Берём карточку из баттлграунда(true) или с магазина(false)
@@ -21,7 +22,7 @@ int main()
 {
 	sf::RenderWindow window(sf::VideoMode(scrX, scrY), "Game 0.001");//рендеринг окна игры
 	sf::Sprite heroes[15];			//Весь набор героев из игры(от 1 до 14, где [0] - пустой)
-	sf::Texture herotexture[14];	
+	sf::Texture herotexture[14];
 	//-----------------------------
 	for (int i = 1; i <= 14; i++)
 	{
@@ -79,15 +80,29 @@ int main()
 	gold.setFont(font);
 	gold.setFillColor(sf::Color::White);
 	gold.setCharacterSize(80);
-	gold.setPosition(int(scrX*0.01), int(scrY*0.7)); //тут надо подумать, куда поставить
+	gold.setPosition(int(scrX * 0.01), int(scrY * 0.7)); //тут надо подумать, куда поставить
 	//------------------------------------------
 	User player;	//Player
+	User temp_player;
 	Computer comp(heroes, comp_field);  //Computer
+	Computer temp_comp = comp;
 	Shop shop(heroes, store_position); //кошачий рынок
 	Battleground bg_player(heroes, player_field); //игровое поле
 	gold.setString("Your gold: " + player.get_amount_gold()); //записываем в text строку
+	float animation = 0;
+	sf::Clock clock;
+	bool turn = true;
+	float time = clock.getElapsedTime().asMicroseconds(); //дать прошедшее время в микросекундах
+	clock.restart(); //перезагружает время
+	time = time / 800; //скорость игры
 	while (window.isOpen())
 	{
+		float time = clock.getElapsedTime().asMicroseconds();
+		clock.restart();
+		time = time / 800;
+
+		animation += time;//
+
 		if (!battle && !shop.store_full)	//если магазин пуст
 		{
 			int max_level = player.num_max_level_heroes(); //уровень таверны
@@ -102,7 +117,7 @@ int main()
 			if (event.type == sf::Event::Closed) //закрываем окно при нажатии на "Закрыть" (или нет, не знаю)
 				window.close();
 
-			if (event.type == sf::Event::MouseButtonPressed && !battle) 
+			if (event.type == sf::Event::MouseButtonPressed && !battle)
 			{
 				if (event.key.code == sf::Mouse::Left) //очевидно
 				{
@@ -110,7 +125,7 @@ int main()
 					{
 						if (shop.check_point(i, pos))		//нажали на кого-то из магазина
 						{
-							isMove = true;					
+							isMove = true;
 							move_from_bg = false;
 							shop.set_pl_ch(i);				//номер героя из мазагина, который выбрал игрок
 							sf::Vector2f t = shop.get_pos();
@@ -144,7 +159,7 @@ int main()
 							if (!bg_player.check_full_bg() && shop.check_item_on_field(scrY))
 							{//есть ли место на поле и в правильно ли место мы перетащили(0.3*scrY < y < 0.7*scrY)
 								int hero_number;
-								hero_number = shop.get_num_hero(); 
+								hero_number = shop.get_num_hero();
 								if (player.buy_hero(hero_number)) //можем ли купить, если да - покупаем(нужно разделить на 2 метода)
 								{
 									gold.setString("Your gold: " + player.get_amount_gold());
@@ -193,6 +208,7 @@ int main()
 
 					if (start_game.getGlobalBounds().contains(pos.x, pos.y))
 					{
+						animation = 2001;
 						battle = true;
 						isMove = false;
 						for (int i = 0; i < 3; i++)
@@ -201,6 +217,8 @@ int main()
 							player.set_sprite_hero(bg_player.get_item(i), bg_player.get_item(i).getPosition(), i);
 						}
 						comp.set_heroes();
+						temp_comp = comp;
+						temp_player = player;
 					}
 				}
 			}
@@ -209,7 +227,7 @@ int main()
 		if (isMove)
 		{
 			sf::Vector2f to_move(pos.x - dx, pos.y - dy);
-			if (move_from_bg) 
+			if (move_from_bg)
 			{
 				bg_player.move_item(to_move);
 			}
@@ -217,7 +235,7 @@ int main()
 		}
 		window.clear();
 		window.draw(background_sprite);
-		if (!battle) 
+		if (!battle)
 		{	//рисовка всех спрайтов, некотыре пустые, возможны ошибки(но их нет)
 			for (int i = 0; i < 3; i++)
 			{
@@ -232,10 +250,11 @@ int main()
 		}
 		if (battle)
 		{
+			animation = 0;
 			for (int i = 0; i < 3; i++)
 			{
-				window.draw(player.get_item(i));
-				window.draw(comp.get_item(i));
+				window.draw(temp_player.get_item(i));
+				window.draw(temp_comp.get_item(i));
 			}
 			for (int i = 0; i < 12; i++)
 			{
@@ -244,12 +263,12 @@ int main()
 				if (i < 6)
 				{
 					num = i / 2;
-					temp = player;
+					temp = temp_player;
 				}
-				else 
+				else
 				{
 					num = (i - 6) / 2;
-					temp = comp;
+					temp = temp_comp;
 				}
 				sf::Vector2f pos_hero = temp.get_item(num).getPosition();
 				if (i % 2 == 0)
@@ -263,13 +282,28 @@ int main()
 					characteristic[i].setPosition(pos_hero.x + 210, pos_hero.y - 100);
 				}
 				window.draw(characteristic[i]);
+			}/*
+			if (turn)
+			{
+				temp_player.attack_player(&temp_comp);
+				turn = false;
+			}
+			else
+			{
+				temp_comp.attack_comp(&temp_player);
+				turn = false;
+			}*/
+			if (temp_comp.all_died() || temp_player.all_died())
+			{
+				battle = false;
+				shop.refresh();
 			}
 		}
 		window.display();
 	}
-
 	return 0;
 }
+
 //примите это как неведомую магию(устанавливает координаты на экране в зависимости от разрешения и количества точек
 void set_position(int* store_position, float plot, int len)
 {
