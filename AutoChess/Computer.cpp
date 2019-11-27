@@ -26,3 +26,27 @@ void Computer::set_heroes()
 		heroes[i].set_cost_num(store_level, temp_hero);
 	}
 }
+
+//void Computer::attack_player(User* pl)
+//{
+//	Hero* p = &heroes[0];
+//	bool all_attacked = true;
+//	for (int i = 0; i < 3; i++)
+//	{
+//		if (!heroes[i].hero_attacked())
+//		{
+//			p = &heroes[i];
+//			all_attacked = false;
+//			break;
+//		}
+//	}
+//	if (all_attacked)
+//	{
+//		refresh_attack();
+//	}
+//	int target;
+//	srand(time(NULL));
+//	target = pl->have_taunt();
+//	if (target == -1) target = rand() % 3;
+//	pl->get_hit(target, p->attack());
+//}

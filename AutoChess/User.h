@@ -10,6 +10,7 @@ public:
 	bool refresh();
 	std::string get_amount_gold();
 	bool up_level();
+	//void attack_player(Computer* pl);
 };
 
 #endif

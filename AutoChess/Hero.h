@@ -7,7 +7,7 @@ class Hero
 	sf::Sprite hero;
 	int cost;
 	int attack_val;
-	int number;
+	int number = 0;
 	bool taunt;
 	bool hero_already_attacked = false;
 public:

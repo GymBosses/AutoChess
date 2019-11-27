@@ -12,6 +12,7 @@ public:
 	void change_deck();
 	void up_level();
 	void attacked(int attack);
+	//void attack_player(User* pl);
 };
 
 #endif

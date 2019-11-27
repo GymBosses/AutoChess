@@ -92,17 +92,10 @@ int main()
 	float animation = 0;
 	sf::Clock clock;
 	bool turn = true;
-	float time = clock.getElapsedTime().asMicroseconds(); //дать прошедшее время в микросекундах
-	clock.restart(); //перезагружает время
-	time = time / 800; //скорость игры
+	float time = 0;
 	while (window.isOpen())
 	{
-		float time = clock.getElapsedTime().asMicroseconds();
-		clock.restart();
-		time = time / 800;
-
-		animation += time;//
-
+		time = clock.getElapsedTime().asSeconds();
 		if (!battle && !shop.store_full)	//если магазин пуст
 		{
 			int max_level = player.num_max_level_heroes(); //уровень таверны
@@ -271,28 +264,32 @@ int main()
 					temp = temp_comp;
 				}
 				sf::Vector2f pos_hero = temp.get_item(num).getPosition();
-				if (i % 2 == 0)
+				if (i % 2 == 1)
 				{
 					characteristic[i].setString(temp.get_health(num));
-					characteristic[i].setPosition(pos_hero.x, pos_hero.y - 100);
+					characteristic[i].setPosition(pos_hero.x + 210, pos_hero.y - 100);
 				}
 				else
 				{
 					characteristic[i].setString(temp.get_attack(num));
-					characteristic[i].setPosition(pos_hero.x + 210, pos_hero.y - 100);
+					characteristic[i].setPosition(pos_hero.x, pos_hero.y - 100);
 				}
 				window.draw(characteristic[i]);
-			}/*
-			if (turn)
-			{
-				temp_player.attack_player(&temp_comp);
-				turn = false;
 			}
-			else
+			if (time >= 1) 
 			{
-				temp_comp.attack_comp(&temp_player);
-				turn = false;
-			}*/
+				if (turn)
+				{
+					temp_player.attack_player(&temp_comp);
+					turn = false;
+				}
+				else
+				{
+					temp_comp.attack_player(&temp_player);
+					turn = true;
+				}
+				clock.restart();
+			}
 			if (temp_comp.all_died() || temp_player.all_died())
 			{
 				battle = false;
