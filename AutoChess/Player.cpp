@@ -137,12 +137,18 @@ void Player::refresh_attack()
 //Надо думать, как сократить----------------------------------------------------------------
 void Player::attack_player(Player* pl)
 {
-	Hero* p = &heroes[0];;
+	Hero* p = &heroes[0];
+	int a = 0;
 	bool all_attacked = true;
 	for (int i = 0; i < 3; i++)
 	{
+		if (heroes[i].hero_died())
+		{
+			continue;
+		}
 		if (!heroes[i].hero_attacked())
 		{
+			a = i;
 			p = &heroes[i];
 			all_attacked = false;
 			break;
@@ -151,11 +157,29 @@ void Player::attack_player(Player* pl)
 	if (all_attacked)
 	{
 		refresh_attack();
+		for (int i = 0; i < 3; i++)
+		{
+			if (!heroes[i].hero_died())
+			{
+				p = &heroes[i];
+				a = i;
+				break;
+			}
+		}
 	}
 	int target;
 	srand(time(NULL));
 	target = pl->have_taunt();
-	if (target == -1) target = rand() % 3;
+	while (target == -1)
+	{
+		target = rand() % 3;
+		if (pl->heroes[target].health <= 0)
+		{
+			target = -1;
+		}
+	}
+	std::cout << "Attakyet hero pod nomerom: " << a << std::endl;
+	std::cout << "Hero, kotorogo ataky10t: " << target << std::endl;
 	pl->get_hit(target, p->attack());
 }
 

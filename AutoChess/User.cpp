@@ -53,27 +53,3 @@ bool User::up_level()
 	golds = golds - minus;
 	return true;
 }
-
-//void User::attack_player(Computer* pl)
-//{
-//	Hero* p = &heroes[0];
-//	bool all_attacked = true;
-//	for (int i = 0; i < 3; i++)
-//	{
-//		if (!heroes[i].hero_attacked())
-//		{
-//			p = &heroes[i];
-//			all_attacked = false;
-//			break;
-//		}
-//	}
-//	if (all_attacked)
-//	{
-//		refresh_attack();
-//	}
-//	int target;
-//	srand(time(NULL));
-//	target = pl->have_taunt();
-//	if (target == -1) target = rand() % 3;
-//	pl->get_hit(target, p->attack());
-//}

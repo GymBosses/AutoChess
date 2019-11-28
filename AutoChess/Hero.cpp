@@ -5,8 +5,7 @@
 void Hero::set_texture(sf::Sprite sp, int cost_hero, int number_hero)
 {
 	hero.setTexture(*sp.getTexture());
-	health = 3;
-	attack_val = 1;
+	set_cost_num(cost_hero, number_hero);
 }
 
 int Hero::attack()
@@ -72,11 +71,61 @@ void Hero::set_cost_num(int cost_hero, int num_hero)
 	}
 	cost = cost_hero;
 	number = num_hero;
+	if (number == 1 || number == 5 || number == 9 || number == 10)
+	{
+		health = 3;
+		attack_val = 1;
+	}
+	else if (number == 2)
+	{
+		health = 1;
+		attack_val = 3;
+	}
+	else if (number == 3 || number == 4 || number == 7)
+	{
+		health = 2;
+		attack_val = 1;
+	}
+	else switch (number)
+	{
+	case 6:
+		health = 3;
+		attack_val = 2;
+		break;
+	case 8:
+		health = 2;
+		attack_val = 2;
+		break;
+	case 11:
+		health = 6;
+		attack_val = 1;
+		break;
+	case 12:
+		health = 4;
+		attack_val = 2;
+		break;
+	case 13:
+		health = 5;
+		attack_val = 4;
+		break;
+	case 14:
+		health = 7;
+		attack_val = 2;
+		break;
+	}
 }
 
 bool Hero::hero_attacked()
 {
-	return hero_already_attacked;
+	if (hero_already_attacked)
+	{
+		return hero_already_attacked;
+	}
+	else
+	{
+		hero_already_attacked = true;
+		return !hero_already_attacked;
+	}
 }
 
 void Hero::refresh_attack()

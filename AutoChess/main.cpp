@@ -212,6 +212,8 @@ int main()
 						comp.set_heroes();
 						temp_comp = comp;
 						temp_player = player;
+						clock.restart();
+						time = 0;
 					}
 				}
 			}
@@ -243,7 +245,6 @@ int main()
 		}
 		if (battle)
 		{
-			animation = 0;
 			for (int i = 0; i < 3; i++)
 			{
 				window.draw(temp_player.get_item(i));
@@ -276,15 +277,17 @@ int main()
 				}
 				window.draw(characteristic[i]);
 			}
-			if (time >= 1)
+			if (time >= 3)
 			{
 				if (turn)
 				{
+					std::cout << "PLAYER" << std::endl;
 					temp_player.attack_player(&temp_comp);
 					turn = false;
 				}
 				else
 				{
+					std::cout << "COMPUTER" << std::endl;
 					temp_comp.attack_player(&temp_player);
 					turn = true;
 				}
