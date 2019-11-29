@@ -81,6 +81,12 @@ int main()
 	gold.setFillColor(sf::Color::White);
 	gold.setCharacterSize(80);
 	gold.setPosition(int(scrX * 0.01), int(scrY * 0.7)); //тут надо подумать, куда поставить
+	//CATS IS DIED//////////////////////
+	sf::Texture died_texture;
+	died_texture.loadFromFile("image/died.jpg");
+	sf::Sprite died;
+	died.setTexture(died_texture);
+	////////////////////////////////////
 	//------------------------------------------
 	User player;	//Player
 	User temp_player;
@@ -89,7 +95,6 @@ int main()
 	Shop shop(heroes, store_position); //кошачий рынок
 	Battleground bg_player(heroes, player_field); //игровое поле
 	gold.setString("Your gold: " + player.get_amount_gold()); //записываем в text строку
-	float animation = 0;
 	sf::Clock clock;
 	bool turn = true;
 	float time = 0;
@@ -201,7 +206,6 @@ int main()
 
 					if (start_game.getGlobalBounds().contains(pos.x, pos.y))
 					{
-						animation = 2001;
 						battle = true;
 						isMove = false;
 						for (int i = 0; i < 3; i++)
@@ -247,8 +251,18 @@ int main()
 		{
 			for (int i = 0; i < 3; i++)
 			{
-				window.draw(temp_player.get_item(i));
-				window.draw(temp_comp.get_item(i));
+				if (temp_player.heroes[i].hero_died())
+				{
+					temp_player.heroes[i].set_texture(died);
+					window.draw(temp_player.get_item(i));
+				}
+				else window.draw(temp_player.get_item(i));
+				if (temp_comp.heroes[i].hero_died())
+				{
+					temp_comp.heroes[i].set_texture(died);
+					window.draw(temp_comp.get_item(i));
+				}
+				else window.draw(temp_comp.get_item(i));
 			}
 			for (int i = 0; i < 12; i++)
 			{
@@ -277,7 +291,7 @@ int main()
 				}
 				window.draw(characteristic[i]);
 			}
-			if (time >= 3)
+			if (time >= 2)
 			{
 				if (turn)
 				{
@@ -300,6 +314,7 @@ int main()
 			}
 		}
 		window.display();
+
 	}
 	return 0;
 }

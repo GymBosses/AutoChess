@@ -137,6 +137,11 @@ void Player::refresh_attack()
 //Надо думать, как сократить----------------------------------------------------------------
 void Player::attack_player(Player* pl)
 {
+	for (int i = 0; i < 3; i++)
+	{
+		pl->heroes[i].return_color();
+		heroes[i].return_color();
+	}
 	Hero* p = &heroes[0];
 	int a = 0;
 	bool all_attacked = true;
@@ -178,6 +183,9 @@ void Player::attack_player(Player* pl)
 			target = -1;
 		}
 	}
+	pl->heroes[target].set_red_color();
+	p->set_green_color();
+
 	std::cout << "Attakyet hero pod nomerom: " << a << std::endl;
 	std::cout << "Hero, kotorogo ataky10t: " << target << std::endl;
 	pl->get_hit(target, p->attack());

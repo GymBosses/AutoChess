@@ -27,8 +27,6 @@ void Hero::attack_this_hero(int attack_vl)
 bool Hero::hero_died()
 {
 	if (health > 0) return false;
-	sf::Sprite temp;
-	hero = temp;
 	return true;
 }
 
@@ -131,4 +129,19 @@ bool Hero::hero_attacked()
 void Hero::refresh_attack()
 {
 	hero_already_attacked = false;
+}
+
+void Hero::set_red_color()
+{
+	hero.setColor(sf::Color(255, 100, 100));
+}
+
+void Hero::set_green_color()
+{
+	hero.setColor(sf::Color(100, 255, 100));
+}
+
+void Hero::return_color()
+{
+	hero.setColor(sf::Color(255, 255, 255));
 }

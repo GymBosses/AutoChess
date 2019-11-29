@@ -27,6 +27,9 @@ public:
 	std::string get_attack();
 	std::string get_health();
 	sf::Sprite get_sprite();
+	void set_red_color();
+	void set_green_color();
+	void return_color();
 };
 
 #endif
