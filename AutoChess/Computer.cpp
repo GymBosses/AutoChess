@@ -27,6 +27,11 @@ void Computer::set_heroes()
 	}
 }
 
+void Computer::up_level()
+{
+	store_level += 1;
+	set_heroes();
+}
 //void Computer::attack_player(User* pl)
 //{
 //	Hero* p = &heroes[0];

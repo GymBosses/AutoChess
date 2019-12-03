@@ -86,6 +86,18 @@ int main()
 	died_texture.loadFromFile("image/died.jpg");
 	sf::Sprite died;
 	died.setTexture(died_texture);
+	//YOU WIN///////////////////////////
+	sf::Texture win_texture;
+	win_texture.loadFromFile("image/win.png");
+	sf::Sprite win;
+	win.setTexture(win_texture);
+	win.setPosition((scrX) / 2 - 200, (scrY) / 2 - 50);
+	//YOU LOSE//////////////////////////
+	sf::Texture lose_texture;
+	lose_texture.loadFromFile("image/lose.png");
+	sf::Sprite lose;
+	lose.setTexture(lose_texture);
+	lose.setPosition((scrX) / 2 - 200, (scrY) / 2 - 50);
 	////////////////////////////////////
 	//------------------------------------------
 	User player;	//Player
@@ -98,6 +110,7 @@ int main()
 	sf::Clock clock;
 	bool turn = true;
 	float time = 0;
+	comp.set_heroes();
 	while (window.isOpen())
 	{
 		time = clock.getElapsedTime().asSeconds();
@@ -202,6 +215,7 @@ int main()
 							shop.set_heroes(player.num_max_level_heroes());
 							gold.setString("Your gold: " + player.get_amount_gold());
 						}
+						comp.up_level();
 					}
 
 					if (start_game.getGlobalBounds().contains(pos.x, pos.y))
@@ -213,7 +227,6 @@ int main()
 							if (bg_player.get_item(i).getTexture() == NULL) continue;
 							player.set_sprite_hero(bg_player.get_item(i), bg_player.get_item(i).getPosition(), i);
 						}
-						comp.set_heroes();
 						temp_comp = comp;
 						temp_player = player;
 						clock.restart();
@@ -291,7 +304,7 @@ int main()
 				}
 				window.draw(characteristic[i]);
 			}
-			if (time >= 2)
+			if (time >= 1)
 			{
 				if (turn)
 				{
@@ -307,10 +320,32 @@ int main()
 				}
 				clock.restart();
 			}
-			if (temp_comp.all_died() || temp_player.all_died())
+			if (temp_comp.all_died())
 			{
 				battle = false;
+				window.draw(win);
+				window.display();
 				shop.refresh();
+				time = 0;
+				clock.restart();
+				while (time <= 2)
+				{
+					time = clock.getElapsedTime().asSeconds();
+				}
+				comp.set_heroes();
+			}
+			if (temp_player.all_died())
+			{
+				battle = false;
+				window.draw(lose);
+				window.display();
+				shop.refresh();
+				time = 0;
+				clock.restart();
+				while (time <= 2)
+				{
+					time = clock.getElapsedTime().asSeconds();
+				}
 			}
 		}
 		window.display();
