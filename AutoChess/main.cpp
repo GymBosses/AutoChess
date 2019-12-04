@@ -48,25 +48,28 @@ int main()
 		window.getSize().y / background_sprite.getLocalBounds().height);
 	background_sprite.setColor(sf::Color(255, 255, 255, 128)); //50% прозрачности
 	//------------------------------------------—прайт обновлени€ магазина и повышение уровн€ таверны
+	//REFRESH/////////////////////////////////////////////////////
 	sf::Texture refresh_texture;
 	refresh_texture.loadFromFile("image/refresh.png");
 	sf::Sprite refresh;
 	refresh.setTexture(refresh_texture);
 	refresh.setPosition(int(0.05 * scrX), int(0.80 * scrY));
+	//UP LEVEL////////////////////////////////////////////////////
 	sf::Texture levelup_texture;
 	levelup_texture.loadFromFile("image/levelup.png");
 	sf::Sprite levelup;
 	levelup.setTexture(levelup_texture);
 	levelup.setPosition(int(0.80 * scrX), int(0.05 * scrY));
+	//START GAME//////////////////////////////////////////////////
 	sf::Texture start_game_texture;
 	start_game_texture.loadFromFile("image/startgame.png");
 	sf::Sprite start_game;
 	start_game.setTexture(start_game_texture);
 	start_game.setPosition(int(0.9 * scrX), int(0.5 * scrY));
-	//Ќа вс€кий случай
+	///////////////////////////////////////////////////////////
 	bool isMove = false;
 	float dx, dy;
-	//-----------------------------“екс с количеством ресурсов у игрока
+	//-----------------------------“екст с количеством ресурсов у игрока
 	sf::Font font;
 	font.loadFromFile("font/Alata-Regular.ttf");
 	sf::Text gold;
@@ -320,10 +323,21 @@ int main()
 				}
 				clock.restart();
 			}
-			if (temp_comp.all_died())
+			bool check_comp = temp_comp.all_died();
+			bool check_player = temp_player.all_died();
+			if (check_comp || check_player)
 			{
 				battle = false;
-				window.draw(win);
+				if (check_comp)
+				{
+					window.draw(win);
+					player.victory();
+				}
+				if (check_player)
+				{
+					window.draw(lose);
+					comp.victory();
+				}
 				window.display();
 				shop.refresh();
 				time = 0;
@@ -334,18 +348,21 @@ int main()
 				}
 				comp.set_heroes();
 			}
-			if (temp_player.all_died())
+			if (comp.score == 3 || player.score == 3)
 			{
-				battle = false;
-				window.draw(lose);
-				window.display();
-				shop.refresh();
-				time = 0;
-				clock.restart();
+				if (check_comp)
+				{
+					window.draw(win);
+				}
+				if (check_player)
+				{
+					window.draw(lose);
+				}
 				while (time <= 2)
 				{
 					time = clock.getElapsedTime().asSeconds();
 				}
+				window.close();
 			}
 		}
 		window.display();

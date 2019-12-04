@@ -191,6 +191,16 @@ void Player::attack_player(Player* pl)
 	pl->get_hit(target, p->attack());
 }
 
+void Player::victory()
+{
+	score++;
+}
+
+std::string Player::get_score()
+{
+	return std::to_string(score);
+}
+
 bool Player::all_died()
 {
 	for (int i = 0; i < 3; i++)

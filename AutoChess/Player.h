@@ -10,7 +10,10 @@ public:
 	int count_heroes = 0;
     int golds = 300;
     int store_level = 1;
+	int score = 0;
 
+	void victory();
+	std::string get_score();
 	void refresh_attack();
 	bool buy_hero(int hero_number);
 	void sell_hero(int number);
