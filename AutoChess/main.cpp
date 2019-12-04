@@ -7,6 +7,7 @@
 #include "MySprite.h"
 #include "Computer.h"
 #include "User.h"
+#include "Buffs.h"
 ////Size cards = (292, 400)
 
 const int scrX = 3000; //–азмеры экрана(мен€ет под свой экран, нужно тестировать)
@@ -108,6 +109,7 @@ int main()
 	Computer comp(heroes, comp_field);  //Computer
 	Computer temp_comp = comp;
 	Shop shop(heroes, store_position); //кошачий рынок
+	Buffs bf;
 	Battleground bg_player(heroes, player_field); //игровое поле
 	gold.setString("Your gold: " + player.get_amount_gold()); //записываем в text строку
 	sf::Clock clock;
@@ -232,6 +234,8 @@ int main()
 						}
 						temp_comp = comp;
 						temp_player = player;
+						bf.Buff(&temp_comp);
+						bf.Buff(&temp_player);
 						clock.restart();
 						time = 0;
 					}
@@ -332,6 +336,7 @@ int main()
 				{
 					window.draw(win);
 					player.victory();
+					comp.set_heroes();
 				}
 				if (check_player)
 				{
@@ -346,7 +351,6 @@ int main()
 				{
 					time = clock.getElapsedTime().asSeconds();
 				}
-				comp.set_heroes();
 			}
 			if (comp.score == 3 || player.score == 3)
 			{

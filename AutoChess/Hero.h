@@ -6,12 +6,12 @@ class Hero
 {
 	sf::Sprite hero;
 	int cost;
-	int attack_val;
 	int number = 0;
 	bool taunt;
 	bool hero_already_attacked = false;
 public:
 	int health;
+	int attack_val;
 	int get_cost();
 	int get_number();
 	void set_texture(sf::Sprite sp, int cost_hero = -1, int number_hero = -1);

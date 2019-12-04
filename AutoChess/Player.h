@@ -21,8 +21,6 @@ public:
 	bool all_died();
 	int num_max_level_heroes(); //Returns the maximum hero number depending on the player’s level
 	void attack_player(Player* pl);
-	//void attack_player(Computer* pl);
-	//virtual void attack_player();
 	void get_hit(int num, int attack_val);
 	sf::Sprite get_item(int num);
 	std::string get_health(int num);
