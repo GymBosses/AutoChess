@@ -21,12 +21,14 @@ void Hero::buff_hero(int up_attack, int up_health)
 
 void Hero::attack_this_hero(int attack_vl)
 {
+	if (attack_vl <= 0) return;
 	health -= attack_vl;
 }
 
 bool Hero::hero_died()
 {
 	if (health > 0) return false;
+	taunt = false;
 	return true;
 }
 

@@ -114,7 +114,8 @@ int Player::have_taunt()
 {
 	for (int i = 0; i < 3; i++)
 	{
-		if (heroes[i].get_number() == 11 || heroes[i].get_number() == 12)
+		if ((heroes[i].get_number() == 11 || heroes[i].get_number() == 12)
+			&& !heroes[i].hero_died())
 		{
 			return i;
 		}
@@ -178,7 +179,7 @@ void Player::attack_player(Player* pl)
 	int target;
 	srand(time(NULL));
 	target = pl->have_taunt();
-	while (target == -1 || pl->heroes[target].hero_died())
+	while (target == -1)
 	{
 		target = rand() % 3;
 		if (pl->heroes[target].health <= 0)
@@ -196,7 +197,7 @@ void Player::attack_player(Player* pl)
 	}
 	if (pl->heroes[target].get_number() == 14)
 	{
-		p->attack_this_hero(pl->heroes[target].attack());
+		p->attack_this_hero(1);
 	}
 
 	ability.SpellAbility(pl->heroes, heroes, target, a);

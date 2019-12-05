@@ -46,9 +46,9 @@ void Ability::HealAllFriend(Hero* attacking_pl, int health_vl)
 	{
 		if (!attacking_pl[i].hero_died())
 		{
-			int a = attacking_pl[i].max_health - attacking_pl[i].health;
-			if (a < health_vl) health_vl = a;
-			attacking_pl[i].attack_this_hero(-health_vl);
+			int restore = attacking_pl[i].max_health - attacking_pl[i].health;
+			if (restore > health_vl) restore = health_vl;
+			attacking_pl[i].health += restore;
 		}
 	}
 }

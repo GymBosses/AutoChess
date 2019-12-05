@@ -311,7 +311,7 @@ int main()
 				}
 				window.draw(characteristic[i]);
 			}
-			if (time >= 1)
+			if (time >= 2)
 			{
 				if (turn)
 				{
