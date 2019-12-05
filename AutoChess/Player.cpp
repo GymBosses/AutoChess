@@ -170,6 +170,7 @@ void Player::attack_player(Player* pl)
 			{
 				p = &heroes[i];
 				a = i;
+				heroes[i].hero_attacked();
 				break;
 			}
 		}

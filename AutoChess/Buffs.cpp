@@ -7,6 +7,7 @@ void Buffs::Buff(Player* pl)
 {
 	for (int i = 0; i < 3; i++)
 	{
+		pl->heroes[i].max_health = pl->heroes[i].health;
 		int number = pl->heroes[i].get_number();
 		switch (number)
 		{ 
@@ -32,6 +33,7 @@ void Buffs::BuffHeroes(Player* pl, int plus_at, int plus_hl, int not_buff)
 	{
 		if (i == not_buff) continue;
 		pl->heroes[i].health += plus_hl;
+		pl->heroes[i].max_health = pl->heroes[i].health;
 		pl->heroes[i].attack_val += plus_at;
 	}
 }

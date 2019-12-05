@@ -10,6 +10,7 @@ class Hero
 	bool taunt;
 	bool hero_already_attacked = false;
 public:
+	int max_health;
 	int health;
 	int attack_val;
 	int get_cost();
