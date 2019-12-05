@@ -4,6 +4,7 @@
 #include <string>
 #include "User.h"
 #include "Computer.h"
+#include "Ability.h"
 
 //using namespace sf;
 //using namespace std;
@@ -137,6 +138,7 @@ void Player::refresh_attack()
 //Надо думать, как сократить----------------------------------------------------------------
 void Player::attack_player(Player* pl)
 {
+	Ability ability;
 	for (int i = 0; i < 3; i++)
 	{
 		pl->heroes[i].return_color();
@@ -186,6 +188,17 @@ void Player::attack_player(Player* pl)
 	pl->heroes[target].set_red_color();
 	p->set_green_color();
 
+	if (p->get_number() == 6)
+	{
+		if (target - 1 >= 0) pl->get_hit(target - 1, p->attack());
+		if (target + 1 <= 2) pl->get_hit(target + 1, p->attack());
+	}
+	if (pl->heroes[target].get_number() == 14)
+	{
+		p->attack_this_hero(pl->heroes[target].attack());
+	}
+
+	ability.SpellAbility(pl->heroes, heroes, target, a);
 	std::cout << "Attakyet hero pod nomerom: " << a << std::endl;
 	std::cout << "Hero, kotorogo ataky10t: " << target << std::endl;
 	pl->get_hit(target, p->attack());
