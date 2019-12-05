@@ -331,6 +331,23 @@ int main()
 			bool check_player = temp_player.all_died();
 			if (check_comp || check_player)
 			{
+				////∆есть, но € не знаю, как иначе///////////////////////////////
+				for (int i = 0; i < 3; i++)
+				{
+					if (temp_player.heroes[i].hero_died())
+					{
+						temp_player.heroes[i].set_texture(died);
+						window.draw(temp_player.get_item(i));
+					}
+					else window.draw(temp_player.get_item(i));
+					if (temp_comp.heroes[i].hero_died())
+					{
+						temp_comp.heroes[i].set_texture(died);
+						window.draw(temp_comp.get_item(i));
+					}
+					else window.draw(temp_comp.get_item(i));
+				}
+				//////////////////////////////////////////////////////////////////
 				battle = false;
 				if (check_comp)
 				{
@@ -343,16 +360,16 @@ int main()
 					window.draw(lose);
 					comp.victory();
 				}
-				window.display();
 				shop.refresh();
 				time = 0;
 				clock.restart();
+				window.display();
 				while (time <= 2)
 				{
 					time = clock.getElapsedTime().asSeconds();
 				}
 			}
-			if (comp.score == 3 || player.score == 3)
+			if (comp.score == 10 || player.score == 10)
 			{
 				if (check_comp)
 				{

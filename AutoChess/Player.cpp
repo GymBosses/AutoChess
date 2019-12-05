@@ -178,7 +178,7 @@ void Player::attack_player(Player* pl)
 	int target;
 	srand(time(NULL));
 	target = pl->have_taunt();
-	while (target == -1)
+	while (target == -1 || pl->heroes[target].hero_died())
 	{
 		target = rand() % 3;
 		if (pl->heroes[target].health <= 0)
