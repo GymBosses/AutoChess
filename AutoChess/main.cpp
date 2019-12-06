@@ -23,8 +23,8 @@ bool move_from_bg;     //ЅерЄм карточку из баттлграунда(true) или с магазина(fal
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(scrX, scrY), "Game 0.001");//рендеринг окна игры
-	sf::Sprite heroes[15];			//¬есь набор героев из игры(от 1 до 14, где [0] - пустой)
-	sf::Texture herotexture[14];
+	sf::Texture herotexture[15];
+	sf::Sprite heroes[15];
 	//-----------------------------
 	for (int i = 1; i <= 14; i++)
 	{
@@ -41,34 +41,17 @@ int main()
 	int comp_field[4];
 	set_position(comp_field, 0.10, 4);
 	//------------------------------ установка бэкграунда
-	sf::Texture background_texture;
-	background_texture.loadFromFile("image/pubg+cats.jpg");
-	sf::Sprite background_sprite;
-	background_sprite.setTexture(background_texture);
-	background_sprite.setScale( //увеличиваем изображение на весь экран
-		window.getSize().x / background_sprite.getLocalBounds().width,
-		window.getSize().y / background_sprite.getLocalBounds().height);
-	background_sprite.setColor(sf::Color(255, 255, 255, 128)); //50% прозрачности
-	//------------------------------------------—прайт обновлени€ магазина и повышение уровн€ таверны
-	//REFRESH/////////////////////////////////////////////////////
-	sf::Texture refresh_texture;
-	refresh_texture.loadFromFile("image/refresh.png");
-	sf::Sprite refresh;
-	refresh.setTexture(refresh_texture);
-	refresh.setPosition(int(0.05 * scrX), int(0.80 * scrY));
-	//UP LEVEL////////////////////////////////////////////////////
-	sf::Texture levelup_texture;
-	levelup_texture.loadFromFile("image/levelup.png");
-	sf::Sprite levelup;
-	levelup.setTexture(levelup_texture);
-	levelup.setPosition(int(0.80 * scrX), int(0.05 * scrY));
-	//START GAME//////////////////////////////////////////////////
-	sf::Texture start_game_texture;
-	start_game_texture.loadFromFile("image/startgame.png");
-	sf::Sprite start_game;
-	start_game.setTexture(start_game_texture);
-	start_game.setPosition(int(0.9 * scrX), int(0.5 * scrY));
-	///////////////////////////////////////////////////////////
+	MySprite background("image/pubg+cats.jpg"); //image background
+	background.full_screen(window.getSize().x, window.getSize().y);
+	background.set_color(255, 255, 255, 128);
+
+	MySprite refresh("image/refresh.png", int(0.05 * scrX), int(0.80 * scrY)); //refresh image
+	MySprite levelup("image/levelup.png", int(0.80 * scrX), int(0.05 * scrY)); 
+	MySprite start_game("image/startgame.png", int(0.9 * scrX), int(0.5 * scrY));
+	MySprite died("image/died.jpg");
+	MySprite win("image/win.png", (scrX) / 2 - 200, (scrY) / 2 - 50);
+	MySprite lose("image/lose.png", (scrX) / 2 - 200, (scrY) / 2 - 50);
+
 	bool isMove = false;
 	float dx, dy;
 	//-----------------------------“екст с количеством ресурсов у игрока
@@ -86,24 +69,6 @@ int main()
 	gold.setFillColor(sf::Color::White);
 	gold.setCharacterSize(80);
 	gold.setPosition(int(scrX * 0.01), int(scrY * 0.7)); //тут надо подумать, куда поставить
-	//CATS IS DIED//////////////////////
-	sf::Texture died_texture;
-	died_texture.loadFromFile("image/died.jpg");
-	sf::Sprite died;
-	died.setTexture(died_texture);
-	//YOU WIN///////////////////////////
-	sf::Texture win_texture;
-	win_texture.loadFromFile("image/win.png");
-	sf::Sprite win;
-	win.setTexture(win_texture);
-	win.setPosition((scrX) / 2 - 200, (scrY) / 2 - 50);
-	//YOU LOSE//////////////////////////
-	sf::Texture lose_texture;
-	lose_texture.loadFromFile("image/lose.png");
-	sf::Sprite lose;
-	lose.setTexture(lose_texture);
-	lose.setPosition((scrX) / 2 - 200, (scrY) / 2 - 50);
-	////////////////////////////////////
 	//------------------------------------------
 	User player;	//Player
 	User temp_player;
@@ -205,7 +170,7 @@ int main()
 						isMove = false;
 					}
 
-					if (refresh.getGlobalBounds().contains(pos.x, pos.y))//обновление мазазина, завоз новых героев
+					if (refresh.sprite.getGlobalBounds().contains(pos.x, pos.y))//обновление мазазина, завоз новых героев
 					{
 						if (player.refresh()) //хватает ли денег(нужно разделить на 2 метода), если да, то -1 голд
 						{
@@ -214,7 +179,7 @@ int main()
 						}
 					}
 
-					if (levelup.getGlobalBounds().contains(pos.x, pos.y)) //ѕовышение уровн€ магазина
+					if (levelup.sprite.getGlobalBounds().contains(pos.x, pos.y)) //ѕовышение уровн€ магазина
 					{
 						if (player.up_level())
 						{
@@ -224,7 +189,7 @@ int main()
 						comp.up_level();
 					}
 
-					if (start_game.getGlobalBounds().contains(pos.x, pos.y))
+					if (start_game.sprite.getGlobalBounds().contains(pos.x, pos.y))
 					{
 						battle = true;
 						isMove = false;
@@ -254,7 +219,7 @@ int main()
 			else shop.move_item(to_move);
 		}
 		window.clear();
-		window.draw(background_sprite);
+		window.draw(background.get_sprite());
 		if (!battle)
 		{	//рисовка всех спрайтов, некотыре пустые, возможны ошибки(но их нет)
 			for (int i = 0; i < 3; i++)
@@ -263,9 +228,9 @@ int main()
 				window.draw(bg_player.get_item(i));
 			}
 			window.draw(shop.get_item(3));
-			window.draw(refresh);
-			window.draw(levelup);
-			window.draw(start_game);
+			window.draw(refresh.sprite);
+			window.draw(levelup.sprite);
+			window.draw(start_game.sprite);
 			window.draw(gold);
 		}
 		if (battle)
@@ -274,13 +239,13 @@ int main()
 			{
 				if (temp_player.heroes[i].hero_died())
 				{
-					temp_player.heroes[i].set_texture(died);
+					temp_player.heroes[i].set_texture(died.sprite);
 					window.draw(temp_player.get_item(i));
 				}
 				else window.draw(temp_player.get_item(i));
 				if (temp_comp.heroes[i].hero_died())
 				{
-					temp_comp.heroes[i].set_texture(died);
+					temp_comp.heroes[i].set_texture(died.sprite);
 					window.draw(temp_comp.get_item(i));
 				}
 				else window.draw(temp_comp.get_item(i));
@@ -337,13 +302,13 @@ int main()
 				{
 					if (temp_player.heroes[i].hero_died())
 					{
-						temp_player.heroes[i].set_texture(died);
+						temp_player.heroes[i].set_texture(died.sprite);
 						window.draw(temp_player.get_item(i));
 					}
 					else window.draw(temp_player.get_item(i));
 					if (temp_comp.heroes[i].hero_died())
 					{
-						temp_comp.heroes[i].set_texture(died);
+						temp_comp.heroes[i].set_texture(died.sprite);
 						window.draw(temp_comp.get_item(i));
 					}
 					else window.draw(temp_comp.get_item(i));
@@ -352,13 +317,13 @@ int main()
 				battle = false;
 				if (check_comp)
 				{
-					window.draw(win);
+					window.draw(win.sprite);
 					player.victory();
 					comp.set_heroes();
 				}
 				if (check_player)
 				{
-					window.draw(lose);
+					window.draw(lose.sprite);
 					comp.victory();
 				}
 				shop.refresh();
@@ -374,11 +339,11 @@ int main()
 			{
 				if (check_comp)
 				{
-					window.draw(win);
+					window.draw(win.sprite);
 				}
 				if (check_player)
 				{
-					window.draw(lose);
+					window.draw(lose.sprite);
 				}
 				while (time <= 2)
 				{

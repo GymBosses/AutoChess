@@ -2,11 +2,13 @@
 #include <string>
 #include "MySprite.h"
 
-MySprite::MySprite(std::string path, int x, int y)
+MySprite::MySprite(const std::string &path, int px, int py)
 {
-	sf::Texture texture;
+	x = px;
+	y = py;
 	texture.loadFromFile(path);
 	sprite.setTexture(texture);
+	sprite.setPosition(px, py);
 }
 
 void MySprite::set_pos(int x, int y)
@@ -24,4 +26,15 @@ void MySprite::full_screen(int scrX, int scrY)
 sf::Texture MySprite::get_texture()
 {
 	return *sprite.getTexture();
+}
+
+void MySprite::set_color(int r, int g, int b, int t)
+{
+	sf::Color col = sf::Color(r, g, b, t);
+	sprite.setColor(col);
+}
+
+sf::Sprite MySprite::get_sprite()
+{
+	return sprite;
 }
