@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
+#include "MySprite.h"
 #include "Player.h"
 #include "Shop.h"
 #include "Battleground.h"
