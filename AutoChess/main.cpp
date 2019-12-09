@@ -11,6 +11,8 @@
 #include "Buffs.h"
 ////Size cards = (292, 400)
 
+//something
+
 const int scrX = 3000; //Размеры экрана(меняет под свой экран, нужно тестировать)
 const int scrY = 2000;
 bool battle = false;   //Отвечает за режим игры: бой(true) или закупка персонажей
