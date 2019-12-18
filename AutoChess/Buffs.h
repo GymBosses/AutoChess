@@ -6,7 +6,9 @@
 class Buffs
 {
 public:
+	//Buffs a player's heroes
 	void Buff(Player* pl);
+	//Hero buffs other heroes, not_buff - number of this hero
 	void BuffHeroes(Player* pl, int plus_at, int plus_hl, int not_buff);
 };
 
