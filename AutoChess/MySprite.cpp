@@ -23,11 +23,6 @@ void MySprite::full_screen(int scrX, int scrY)
 		scrY / sprite.getLocalBounds().height);
 }
 
-sf::Texture MySprite::get_texture()
-{
-	return *sprite.getTexture();
-}
-
 void MySprite::set_color(int r, int g, int b, int t)
 {
 	sf::Color col = sf::Color(r, g, b, t);
