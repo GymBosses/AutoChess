@@ -2,6 +2,7 @@
 #define HERO
 #include <SFML/Graphics.hpp>
 
+
 class Hero
 {
 	sf::Sprite hero;

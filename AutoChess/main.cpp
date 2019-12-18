@@ -11,8 +11,8 @@
 #include "Buffs.h"
 ////Size cards = (292, 400)
 
-const int scrX = 3000; //Screen sizes (changes to fit your screen, you need to test)
-const int scrY = 2000;
+const int scrX = sf::VideoMode::getDesktopMode().width; //Screen sizes (changes to fit your screen, you need to test)
+const int scrY = sf::VideoMode::getDesktopMode().height;
 bool battle = false;   //Responsible for the game mode : fight(true) or purchase of characters
 sf::Vector2f oldPos;   //Before moving the sprite, remember its old position
 
@@ -31,12 +31,13 @@ int main()
 		std::string full_path = "image/" + std::to_string(i) + ".jpg"; //file path jpg
 		herotexture[i - 1].loadFromFile(full_path);					   //load texture from file
 		heroes[i].setTexture(herotexture[i - 1]);					   //set texture
+		heroes[i].setScale(scrX / 3000.0, scrY / 2000.0);
 	}
 	//----------------------------------------
 	//------------------------------SET_STORE_POSITION AND PLAYER_FIELD
 	int store_position[5];                 //points (x1, x2, x3, y) where the cards will be located in the store
 	set_position(store_position, 0.75, 5);
-	int player_field[4];				//similarly on the field
+	int player_field[4];				   //similarly on the field
 	set_position(player_field, 0.50, 4);
 	int comp_field[4];
 	set_position(comp_field, 0.10, 4);
@@ -352,6 +353,7 @@ int main()
 				window.close();
 			}
 		}
+
 		window.display();
 
 	}

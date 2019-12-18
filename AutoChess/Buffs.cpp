@@ -17,10 +17,10 @@ void Buffs::Buff(Player* pl)
 		case 5:
 			BuffHeroes(pl, 0, 2, i);
 			break;
-		case 8:
+		case 7:
 			BuffHeroes(pl, 2, 0, i);
 			break;
-		case 9:
+		case 8:
 			BuffHeroes(pl, 1, 2, i);
 			break;
 		}

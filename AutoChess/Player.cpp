@@ -18,15 +18,19 @@ sf::Sprite Player::get_item(int num)
 bool Player::buy_hero(int hero_number)
 {
 	int cost = 0;
-	if (hero_number <= 5)
+	if (hero_number == 7)
+	{
+		cost = 7;
+	}
+	else if (hero_number <= 5)
 	{
 		cost = 1;
 	}
-	else if (hero_number <= 9)
+	else if (hero_number <= 8)
 	{
 		cost = 2;
 	}
-	else if (hero_number <= 12)
+	else if (hero_number <= 11)
 	{
 		cost = 3;
 	}
@@ -62,10 +66,10 @@ int Player::num_max_level_heroes()
 		return 5;
 		break;
 	case 2:
-		return 9;
+		return 8;
 		break;
 	case 3:
-		return 12;
+		return 11;
 		break;
 	case 4:
 		return 14;
@@ -83,11 +87,11 @@ void Player::sell_hero(int number)
 	{
 		cost = 1;
 	}
-	else if (hero_number <= 9)
+	else if (hero_number <= 8)
 	{
 		cost = 2;
 	}
-	else if (hero_number <= 12)
+	else if (hero_number <= 11)
 	{
 		cost = 3;
 	}
@@ -114,7 +118,7 @@ int Player::have_taunt()
 {
 	for (int i = 0; i < 3; i++)
 	{
-		if ((heroes[i].get_number() == 11 || heroes[i].get_number() == 12)
+		if ((heroes[i].get_number() == 11 || heroes[i].get_number() == 10)
 			&& !heroes[i].hero_died())
 		{
 			return i;

@@ -71,7 +71,8 @@ void Hero::set_cost_num(int cost_hero, int num_hero)
 	}
 	cost = cost_hero;
 	number = num_hero;
-	if (number == 1 || number == 5 || number == 9 || number == 10)
+
+	if (number == 1 || number == 5 || number == 8 || number == 9)
 	{
 		health = 3;
 		attack_val = 1;
@@ -81,7 +82,7 @@ void Hero::set_cost_num(int cost_hero, int num_hero)
 		health = 1;
 		attack_val = 3;
 	}
-	else if (number == 3 || number == 4 || number == 7)
+	else if (number == 3 || number == 4 || number == 12)
 	{
 		health = 2;
 		attack_val = 1;
@@ -92,15 +93,15 @@ void Hero::set_cost_num(int cost_hero, int num_hero)
 		health = 3;
 		attack_val = 2;
 		break;
-	case 8:
+	case 7:
 		health = 2;
 		attack_val = 2;
 		break;
-	case 11:
+	case 10:
 		health = 6;
 		attack_val = 1;
 		break;
-	case 12:
+	case 11:
 		health = 4;
 		attack_val = 2;
 		break;

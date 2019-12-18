@@ -14,10 +14,10 @@ void Ability::SpellAbility(Hero* attacked_pl, Hero* attacking_pl, int num_attack
 	case 4:
 		HealAllFriend(attacking_pl, 3);
 		break;
-	case 7:
+	case 12:
 		DeBuffs(attacked_pl);
 		break;
-	case 10:
+	case 9:
 		AttackAllHeroes(attacked_pl, 2);
 	default:
 		break;
