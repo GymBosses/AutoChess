@@ -6,6 +6,7 @@
 #include "Shop.h"
 #include "Battleground.h"
 #include "MySprite.h"
+#include "MyText.h"
 #include "Computer.h"
 #include "User.h"
 #include "Buffs.h"
@@ -55,22 +56,6 @@ int main()
 	//--------------------------------------------------------------------------
 	bool isMove = false;
 	float dx, dy;
-	//-----------------------------The text with the amount of resources the player has
-	sf::Font font;
-	font.loadFromFile("font/Alata-Regular.ttf");
-	sf::Text gold;
-	sf::Text characteristic[12];
-	for (int i = 0; i < 12; i++)
-	{
-		characteristic[i].setFont(font);
-		characteristic[i].setFillColor(sf::Color::White);
-		characteristic[i].setCharacterSize(80);
-	}
-	gold.setFont(font);
-	gold.setFillColor(sf::Color::White);
-	gold.setCharacterSize(80);
-	gold.setPosition(int(scrX * 0.01), int(scrY * 0.7)); //here you need to think about where to put
-	//------------------------------------------
 	User player;	//Player
 	User temp_player;
 	Computer comp(heroes, comp_field);  //Computer
@@ -78,7 +63,10 @@ int main()
 	Shop shop(heroes, store_position); //store
 	Buffs bf;
 	Battleground bg_player(heroes, player_field); //battlefield
-	gold.setString("Your gold: " + player.get_amount_gold()); //set text to the string
+	//-----------------------------The text with the amount of resources the player has	
+	MyText gold("Your gold: " + player.get_amount_gold());
+	gold.set_pos(int(scrX * 0.01), int(scrY * 0.7));
+	MyText characteristic[12];
 	sf::Clock clock;
 	bool turn = true;
 	float time = 0;
@@ -145,7 +133,7 @@ int main()
 								hero_number = shop.get_num_hero();
 								if (player.buy_hero(hero_number)) //can we buy, if yes - buy (need to be divided into 2 methods)
 								{
-									gold.setString("Your gold: " + player.get_amount_gold());
+									gold.change_text("Your gold: " + player.get_amount_gold());
 									shop.delete_item();				//delete from the store
 									bg_player.set_hero(hero_number);//add to the playing field
 								}
@@ -160,7 +148,7 @@ int main()
 							int index = k / (int(scrX / 4) - 146) - 1; //what is the score (from left to right) sprite (idk)
 							bg_player.sell_hero();
 							player.sell_hero(index);	//sell by serial number
-							gold.setString("Your gold: " + player.get_amount_gold());
+							gold.change_text("Your gold: " + player.get_amount_gold());
 						}
 						else
 						{
@@ -176,7 +164,7 @@ int main()
 						if (player.refresh()) //is there enough money (need to be divided into 2 methods), if so, then -1 gold
 						{
 							shop.refresh();
-							gold.setString("Your gold: " + player.get_amount_gold());
+							gold.change_text("Your gold: " + player.get_amount_gold());
 						}
 					}
 
@@ -185,7 +173,7 @@ int main()
 						if (player.up_level())
 						{
 							shop.set_heroes(player.num_max_level_heroes());
-							gold.setString("Your gold: " + player.get_amount_gold());
+							gold.change_text("Your gold: " + player.get_amount_gold());
 						}
 						comp.up_level();
 					}
@@ -232,10 +220,12 @@ int main()
 			window.draw(refresh.sprite);
 			window.draw(levelup.sprite);
 			window.draw(start_game.sprite);
-			window.draw(gold);
+			window.draw(gold.get_text());
 		}
 		if (battle)
 		{
+			bool check_comp = temp_comp.all_died();
+			bool check_player = temp_player.all_died();
 			for (int i = 0; i < 3; i++)
 			{
 				if (temp_player.heroes[i].hero_died())
@@ -268,17 +258,17 @@ int main()
 				sf::Vector2f pos_hero = temp.get_item(num).getPosition();
 				if (i % 2 == 1)
 				{
-					characteristic[i].setString(temp.get_health(num));
-					characteristic[i].setPosition(pos_hero.x + 210, pos_hero.y - 100);
+					characteristic[i].change_text(temp.get_health(num));
+					characteristic[i].set_pos(pos_hero.x + 210, pos_hero.y - 100);
 				}
 				else
 				{
-					characteristic[i].setString(temp.get_attack(num));
-					characteristic[i].setPosition(pos_hero.x, pos_hero.y - 100);
+					characteristic[i].change_text(temp.get_attack(num));
+					characteristic[i].set_pos(pos_hero.x, pos_hero.y - 100);
 				}
-				window.draw(characteristic[i]);
+				window.draw(characteristic[i].get_text());
 			}
-			if (time >= 2)
+			if (time >= 1.5 && !(check_comp || check_player))
 			{
 				if (turn)
 				{
@@ -293,48 +283,6 @@ int main()
 					turn = true;
 				}
 				clock.restart();
-			}
-			bool check_comp = temp_comp.all_died();
-			bool check_player = temp_player.all_died();
-			if (check_comp || check_player)
-			{
-				////its not good, need think about it///////////////////////////////
-				for (int i = 0; i < 3; i++)
-				{
-					if (temp_player.heroes[i].hero_died())
-					{
-						temp_player.heroes[i].set_texture(died.sprite);
-						window.draw(temp_player.get_item(i));
-					}
-					else window.draw(temp_player.get_item(i));
-					if (temp_comp.heroes[i].hero_died())
-					{
-						temp_comp.heroes[i].set_texture(died.sprite);
-						window.draw(temp_comp.get_item(i));
-					}
-					else window.draw(temp_comp.get_item(i));
-				}
-				//////////////////////////////////////////////////////////////////
-				battle = false;
-				if (check_comp)
-				{
-					window.draw(win.sprite);
-					player.victory();
-					comp.set_heroes();
-				}
-				if (check_player)
-				{
-					window.draw(lose.sprite);
-					comp.victory();
-				}
-				shop.refresh();
-				time = 0;
-				clock.restart();
-				window.display();
-				while (time <= 2)
-				{
-					time = clock.getElapsedTime().asSeconds();
-				}
 			}
 			if (comp.score == 10 || player.score == 10)
 			{
@@ -351,6 +299,29 @@ int main()
 					time = clock.getElapsedTime().asSeconds();
 				}
 				window.close();
+			}
+
+			if (check_comp || check_player)
+			{
+				battle = false;
+				if (check_comp)
+				{
+					window.draw(win.sprite);
+					player.victory();
+					comp.set_heroes();
+				}
+				if (check_player)
+				{
+					window.draw(lose.sprite);
+					comp.victory();
+				}
+				shop.refresh();
+				time = 0;
+				clock.restart(); window.display();
+				while (time <= 2)
+				{
+					time = clock.getElapsedTime().asSeconds();
+				}
 			}
 		}
 
