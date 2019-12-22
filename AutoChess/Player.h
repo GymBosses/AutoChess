@@ -8,7 +8,7 @@ class Player
 public:
 	Hero heroes[3];
 	int count_heroes = 0;
-	int golds = 300;
+	int golds = 3;
 	int store_level = 1;
 	int score = 0;
 	//increases the score by one
