@@ -51,8 +51,19 @@ int main()
 	MySprite levelup("image/levelup.png", scrX, scrY, int(0.80 * scrX), int(0.05 * scrY));
 	MySprite start_game("image/startgame.png", scrX, scrY, int(0.9 * scrX), int(0.5 * scrY));
 	MySprite died("image/died.jpg", scrX, scrY);
-	MySprite win("image/win.png", scrX, scrY, (scrX) / 2 - 200, (scrY) / 2 - 50);
-	MySprite lose("image/lose.png", scrX, scrY, (scrX) / 2 - 200, (scrY) / 2 - 50);
+	//MySprite win("image/win.png", scrX, scrY, (scrX) / 2 - 200, (scrY) / 2 - 50);
+	//MySprite lose("image/lose.png", scrX, scrY, (scrX) / 2 - 200, (scrY) / 2 - 50);
+	//-----------------------------------------------------------------------WONLOSE
+	MySprite won[3]; //Massive for created win/lose windows
+	MySprite lost[3];
+	for (int i = 0; i < 3; i++)
+	{
+		won[i].create_sprite("image/win" + std::to_string(i) + ".jpg", scrX, scrY, (scrX) / 2 - 200, (scrY / 2 - 50));
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		lost[i].create_sprite("image/lose" + std::to_string(i) + ".jpg", scrX, scrY, (scrX) / 2 - 200, (scrY / 2 - 50));
+	}
 	//--------------------------------------------------------------------------
 	bool isMove = false;
 	float dx, dy;
@@ -297,13 +308,14 @@ int main()
 			}
 			if (comp.score == 10 || player.score == 10)
 			{
+				int rnd = rand() % 3;
 				if (check_comp)
 				{
-					window.draw(win.sprite);
+					window.draw(won[rnd].sprite);
 				}
 				if (check_player)
 				{
-					window.draw(lose.sprite);
+					window.draw(lost[rnd].sprite);
 				}
 				while (time <= 2)
 				{
@@ -315,6 +327,7 @@ int main()
 			if ((check_comp || check_player) || time_turn >= 60.0)
 			{
 				battle = false;
+				int rnd = rand() % 3;
 				if (time_turn >= 60.0)
 				{
 					player.victory();
@@ -322,13 +335,13 @@ int main()
 				}
 				if (check_comp)
 				{
-					window.draw(win.sprite);
+					window.draw(won[rnd].sprite);
 					player.victory();
 					comp.set_heroes();
 				}
 				if (check_player)
 				{
-					window.draw(lose.sprite);
+					window.draw(lost[rnd].sprite);
 					comp.victory();
 				}
 				player.end_battle();
