@@ -43,16 +43,16 @@ int main()
 	int comp_field[4];
 	set_position(comp_field, 0.10, 4);
 	//------------------------------ SET BATTLEGROUND AND OTHER IMAGE
-	MySprite background("image/pubg+cats.jpg"); //image background
+	MySprite background("image/pubg+cats.jpg", scrX, scrY); //image background
 	background.full_screen(window.getSize().x, window.getSize().y);
 	background.set_color(255, 255, 255, 128);
-
-	MySprite refresh("image/refresh.png", int(0.05 * scrX), int(0.80 * scrY)); //refresh image
-	MySprite levelup("image/levelup.png", int(0.80 * scrX), int(0.05 * scrY));
-	MySprite start_game("image/startgame.png", int(0.9 * scrX), int(0.5 * scrY));
-	MySprite died("image/died.jpg");
-	MySprite win("image/win.png", (scrX) / 2 - 200, (scrY) / 2 - 50);
-	MySprite lose("image/lose.png", (scrX) / 2 - 200, (scrY) / 2 - 50);
+	//-------------------------------------------------------------------------
+	MySprite refresh("image/refresh.png", scrX, scrY, int(0.05 * scrX), int(0.80 * scrY)); //refresh image
+	MySprite levelup("image/levelup.png", scrX, scrY, int(0.80 * scrX), int(0.05 * scrY));
+	MySprite start_game("image/startgame.png", scrX, scrY, int(0.9 * scrX), int(0.5 * scrY));
+	MySprite died("image/died.jpg", scrX, scrY);
+	MySprite win("image/win.png", scrX, scrY, (scrX) / 2 - 200, (scrY) / 2 - 50);
+	MySprite lose("image/lose.png", scrX, scrY, (scrX) / 2 - 200, (scrY) / 2 - 50);
 	//--------------------------------------------------------------------------
 	bool isMove = false;
 	float dx, dy;
@@ -65,8 +65,13 @@ int main()
 	Battleground bg_player(heroes, player_field); //battlefield
 	//-----------------------------The text with the amount of resources the player has	
 	MyText gold("Your gold: " + player.get_amount_gold());
+	gold.set_scale(scrX);
 	gold.set_pos(int(scrX * 0.01), int(scrY * 0.7));
 	MyText characteristic[12];
+	for (int i = 0; i < 12; i++)
+	{
+		characteristic[i].set_scale(scrX);
+	}
 	sf::Clock clock;
 	bool turn = true;
 	float time = 0;
@@ -259,12 +264,12 @@ int main()
 				if (i % 2 == 1)
 				{
 					characteristic[i].change_text(temp.get_health(num));
-					characteristic[i].set_pos(pos_hero.x + 210, pos_hero.y - 100);
+					characteristic[i].set_pos(pos_hero.x + 210 * (scrX/3000.0), pos_hero.y - 100*(scrX/3000.0));
 				}
 				else
 				{
 					characteristic[i].change_text(temp.get_attack(num));
-					characteristic[i].set_pos(pos_hero.x, pos_hero.y - 100);
+					characteristic[i].set_pos(pos_hero.x, pos_hero.y - 100 * (scrX/3000.0));	
 				}
 				window.draw(characteristic[i].get_text());
 			}
@@ -315,6 +320,8 @@ int main()
 					window.draw(lose.sprite);
 					comp.victory();
 				}
+				player.end_battle();
+				gold.change_text("Your gold: " + player.get_amount_gold());
 				shop.refresh();
 				time = 0;
 				clock.restart(); window.display();
@@ -337,7 +344,7 @@ void set_position(int* store_position, float plot, int len)
 	len = len - 1;
 	for (int i = 0; i < len; i++)
 	{
-		store_position[i] = (i + 1) * int(scrX / (len + 1)) - 146;//coordinate x
+		store_position[i] = (i + 1) * int(scrX / (len + 1)) - 146 * (scrX / 3000.0);//coordinate x
 	}
 	store_position[len] = int(scrY * plot); //'y' coordinates, everyone has one 
 }

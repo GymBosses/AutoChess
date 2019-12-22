@@ -18,11 +18,7 @@ sf::Sprite Player::get_item(int num)
 bool Player::buy_hero(int hero_number)
 {
 	int cost = 0;
-	if (hero_number == 7)
-	{
-		cost = 7;
-	}
-	else if (hero_number <= 5)
+	if (hero_number <= 5)
 	{
 		cost = 1;
 	}
@@ -82,24 +78,7 @@ int Player::num_max_level_heroes()
 void Player::sell_hero(int number)
 {
 	int hero_number = heroes[number].get_number();
-	int cost = 0;
-	if (hero_number <= 5)
-	{
-		cost = 1;
-	}
-	else if (hero_number <= 8)
-	{
-		cost = 2;
-	}
-	else if (hero_number <= 11)
-	{
-		cost = 3;
-	}
-	else if (hero_number <= 14)
-	{
-		cost = 4;
-	}
-	golds = golds + cost;
+	golds = golds + 1;
 	heroes[number].set_cost_num(0, 0);
 	count_heroes--;
 }
@@ -213,6 +192,11 @@ void Player::attack_player(Player* pl)
 void Player::victory()
 {
 	score++;
+}
+
+void Player::end_battle()
+{
+	golds = golds + 3;
 }
 
 std::string Player::get_score()

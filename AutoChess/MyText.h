@@ -13,6 +13,7 @@ public:
 	sf::Text get_text();
 	void change_text(const std::string& std);
 	void set_pos(int x, int y);
+	void set_scale(float sc);
 };
 
 #endif

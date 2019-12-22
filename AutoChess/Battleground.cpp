@@ -28,6 +28,7 @@ void Battleground::set_hero(int number)
 		if (heroes[i].getTexture() == NULL)
 		{
 			heroes[i].setTexture(*all_heroes[number].getTexture());
+			heroes[i].setScale(all_heroes[number].getScale());
 			return;
 		}
 	}

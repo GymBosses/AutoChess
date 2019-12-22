@@ -2,13 +2,14 @@
 #include <string>
 #include "MySprite.h"
 
-MySprite::MySprite(const std::string &path, int px, int py)
+MySprite::MySprite(const std::string &path, int scrX, int scrY, int px, int py)
 {
 	x = px;
 	y = py;
 	texture.loadFromFile(path);
 	sprite.setTexture(texture);
 	sprite.setPosition(px, py);
+	sprite.setScale(scrX / 3000.0, scrY / 2000.0);
 }
 
 void MySprite::set_pos(int x, int y)

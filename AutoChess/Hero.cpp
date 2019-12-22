@@ -5,6 +5,7 @@
 void Hero::set_texture(sf::Sprite sp, int cost_hero, int number_hero)
 {
 	hero.setTexture(*sp.getTexture());
+	hero.setScale(sp.getScale());
 	//set_cost_num(cost_hero, number_hero);
 }
 

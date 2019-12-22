@@ -35,6 +35,7 @@ void Shop::set_heroes(int max_level_shop)
 	{
 		temp_hero = rand() % max_level + 1;
 		showcase[i].setTexture(*all_heroes[temp_hero].getTexture());
+		showcase[i].setScale(all_heroes[temp_hero].getScale());
 	}
 	store_full = true;
 }
@@ -47,6 +48,7 @@ void Shop::refresh()
 	{
 		temp_hero = rand() % max_level + 1;
 		showcase[i].setTexture(*all_heroes[temp_hero].getTexture());
+		showcase[i].setScale(all_heroes[temp_hero].getScale());
 	}
 	store_full = true;
 }

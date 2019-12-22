@@ -10,7 +10,7 @@ public:
 	sf::Sprite sprite; //sfml sprite
 	sf::Sprite get_sprite();
 	//set sptite from file path and set position, if this need
-	MySprite(const std::string& path, int px = 0, int py = 0);
+	MySprite(const std::string& path, int scrX = 3000, int scrY = 2000, int px = 0, int py = 0);
 	//set position srpite
 	void set_pos(int x, int y);
 	//full screen display

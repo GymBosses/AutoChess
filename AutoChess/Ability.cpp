@@ -12,7 +12,7 @@ void Ability::SpellAbility(Hero* attacked_pl, Hero* attacking_pl, int num_attack
 		AttackAllHeroes(attacked_pl, 1);
 		break;
 	case 4:
-		HealAllFriend(attacking_pl, 3);
+		HealAllFriend(attacking_pl, 1);
 		break;
 	case 12:
 		DeBuffs(attacked_pl);
