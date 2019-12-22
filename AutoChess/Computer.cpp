@@ -21,7 +21,7 @@ void Computer::set_heroes()
 	srand(time(NULL));
 	for (int i = 0; i < 3; i++)
 	{
-		temp_hero = rand() % max_level + 1;
+		temp_hero = 4;//rand() % max_level + 1;
 		heroes[i].set_texture(all_heroes[temp_hero]);
 		heroes[i].set_cost_num(store_level, temp_hero);
 	}

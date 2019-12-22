@@ -73,12 +73,16 @@ int main()
 		characteristic[i].set_scale(scrX);
 	}
 	sf::Clock clock;
+	sf::Clock turn_clock;
 	bool turn = true;
-	float time = 0;
+	float time = 0.0;
+	float time_turn = 0.0;
 	comp.set_heroes();
 	while (window.isOpen())
 	{
 		time = clock.getElapsedTime().asSeconds();
+		time_turn = turn_clock.getElapsedTime().asSeconds();
+
 		if (!battle && !shop.store_full)	//if store is empty
 		{
 			int max_level = player.num_max_level_heroes(); //store level
@@ -197,7 +201,9 @@ int main()
 						bf.Buff(&temp_comp);
 						bf.Buff(&temp_player);
 						clock.restart();
+						turn_clock.restart();
 						time = 0;
+						time_turn = 0;
 					}
 				}
 			}
@@ -306,9 +312,14 @@ int main()
 				window.close();
 			}
 
-			if (check_comp || check_player)
+			if ((check_comp || check_player) || time_turn >= 60.0)
 			{
 				battle = false;
+				if (time_turn >= 60.0)
+				{
+					player.victory();
+					comp.victory();
+				}
 				if (check_comp)
 				{
 					window.draw(win.sprite);
@@ -324,6 +335,7 @@ int main()
 				gold.change_text("Your gold: " + player.get_amount_gold());
 				shop.refresh();
 				time = 0;
+				time_turn = 0;
 				clock.restart(); window.display();
 				while (time <= 2)
 				{
