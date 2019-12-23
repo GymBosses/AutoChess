@@ -7,6 +7,7 @@ class Computer : public Player
 {
 	sf::Sprite all_heroes[15];
 public:
+	Computer() {};
 	Computer(sf::Sprite* stock_heroes, int* field_position);
 	//Randomly sets heroes
 	void set_heroes();

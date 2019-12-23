@@ -20,9 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ability.cpp" />
+    <ClCompile Include="Battle.cpp" />
     <ClCompile Include="Battleground.cpp" />
     <ClCompile Include="Buffs.cpp" />
     <ClCompile Include="Computer.cpp" />
+    <ClCompile Include="Endgame.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MySprite.cpp" />
@@ -34,9 +36,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ability.h" />
+    <ClInclude Include="Battle.h" />
     <ClInclude Include="Battleground.h" />
     <ClInclude Include="Buffs.h" />
     <ClInclude Include="Computer.h" />
+    <ClInclude Include="Endgame.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="MySprite.h" />
     <ClInclude Include="MyText.h" />
