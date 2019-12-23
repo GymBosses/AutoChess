@@ -28,6 +28,7 @@
     <ClCompile Include="MySprite.cpp" />
     <ClCompile Include="MyText.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Purchase.cpp" />
     <ClCompile Include="Shop.cpp" />
     <ClCompile Include="User.cpp" />
   </ItemGroup>
@@ -40,6 +41,7 @@
     <ClInclude Include="MySprite.h" />
     <ClInclude Include="MyText.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Purchase.h" />
     <ClInclude Include="Shop.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>

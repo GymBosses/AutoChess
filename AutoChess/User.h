@@ -14,6 +14,8 @@ public:
 	//up store level
 	bool up_level();
 	//void attack_player(Computer* pl);
+	//return cost that need for up store
+	std::string upgrade_cost();
 };
 
 #endif

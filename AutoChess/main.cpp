@@ -47,12 +47,10 @@ int main()
 	background.full_screen(window.getSize().x, window.getSize().y);
 	background.set_color(255, 255, 255, 128);
 	//-------------------------------------------------------------------------
-	MySprite refresh("image/refresh.png", scrX, scrY, int(0.05 * scrX), int(0.80 * scrY)); //refresh image
-	MySprite levelup("image/levelup.png", scrX, scrY, int(0.80 * scrX), int(0.05 * scrY));
-	MySprite start_game("image/startgame.png", scrX, scrY, int(0.9 * scrX), int(0.5 * scrY));
+	MySprite refresh("image/refresh.png", scrX, scrY, int(0.03 * scrX), int(0.78 * scrY)); //refresh image
+	MySprite levelup("image/levelup.png", scrX, scrY, int(0.85 * scrX), int(0.1 * scrY));
+	MySprite start_game("image/startgame.png", scrX, scrY, int(0.45 * scrX), int(0.11 * scrY));
 	MySprite died("image/died.jpg", scrX, scrY);
-	//MySprite win("image/win.png", scrX, scrY, (scrX) / 2 - 200, (scrY) / 2 - 50);
-	//MySprite lose("image/lose.png", scrX, scrY, (scrX) / 2 - 200, (scrY) / 2 - 50);
 	//-----------------------------------------------------------------------WONLOSE
 	MySprite won[3]; //Massive for created win/lose windows
 	MySprite lost[3];
@@ -75,7 +73,22 @@ int main()
 	Buffs bf;
 	Battleground bg_player(heroes, player_field); //battlefield
 	//-----------------------------The text with the amount of resources the player has	
+
 	MyText gold("Your gold: " + player.get_amount_gold());
+	//POWER///////////////////////////////////////////////////////////////////
+	MyText play("PLAY");
+	play.set_scale(scrX);
+	play.set_pos(int(scrX * 0.45), int(scrY * 0.01));
+	MyText shop_lvl("Your shop level: " + std::to_string(player.store_level));
+	shop_lvl.set_scale(scrX);
+	shop_lvl.set_pos(int(scrX * 0.75), int(scrY * 0.01));
+	MyText shop_cost("Store upgrade cost- " + player.upgrade_cost());
+	shop_cost.set_scale(scrX);
+	shop_cost.set_pos(int(scrX * 0.7), int(scrY * 0.23));
+	MyText total_score("Total score: " + std::to_string(player.score) + ":" + std::to_string(comp.score));
+	total_score.set_scale(scrX);
+	total_score.set_pos(int(scrX * 0.01), int(scrY * 0.01));
+	//-----------------------------------------------------------------------
 	gold.set_scale(scrX);
 	gold.set_pos(int(scrX * 0.01), int(scrY * 0.7));
 	MyText characteristic[12];
@@ -194,6 +207,9 @@ int main()
 						{
 							shop.set_heroes(player.num_max_level_heroes());
 							gold.change_text("Your gold: " + player.get_amount_gold());
+							shop_lvl.change_text("Your shop level- " + std::to_string(player.store_level));
+							shop_cost.change_text("Store upgrade cost- " + player.upgrade_cost());
+
 						}
 						comp.up_level();
 					}
@@ -243,6 +259,12 @@ int main()
 			window.draw(levelup.sprite);
 			window.draw(start_game.sprite);
 			window.draw(gold.get_text());
+			//-------------------------------POWER
+			window.draw(shop_lvl.get_text());
+			window.draw(shop_cost.get_text());
+			window.draw(total_score.get_text());
+			window.draw(play.get_text());
+			//---------------------------------
 		}
 		if (battle)
 		{

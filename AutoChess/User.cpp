@@ -53,3 +53,17 @@ bool User::up_level()
 	golds = golds - minus;
 	return true;
 }
+
+std::string User::upgrade_cost()
+{
+	switch (store_level)
+	{
+	case 1:
+		return "3";
+	case 2:
+		return "4";
+	default:
+		return "5";
+	}
+	return "";
+}
